@@ -6,5 +6,5 @@
 
 ## Cource's Support
 
-[CPP Syntax](Documents/CppSyntax.pdf)
+[CPP Syntax](Documents/CppSyntax.pdf)\
 [Introduction](Documents/UECppIntroduction.pdf)
