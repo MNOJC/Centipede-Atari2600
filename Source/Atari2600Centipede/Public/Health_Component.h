@@ -24,17 +24,17 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float DefaultHealth;
+	int DefaultHealth;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
-	float Health;
+	int Health;
 
 public:
 
-	void Damage(float DamageAmount);
+	void Damage(int DamageAmount);
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
-	float GetHealth() const { return Health; }
+	int GetHealth() const { return Health; }
 
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")

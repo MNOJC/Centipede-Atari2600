@@ -27,8 +27,8 @@ void UHealth_Component::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	UE_LOG(LogCentipede, Log, TEXT("%s was killed"), *GetOwner()->GetName() );
 }
 
-void UHealth_Component::Damage(float DamageAmount)
+void UHealth_Component::Damage(int DamageAmount)
 {
-	Health = Health - DamageAmount;
+	Health -= DamageAmount;
 	if (IsDead()) GetOwner()->Destroy();
 }
