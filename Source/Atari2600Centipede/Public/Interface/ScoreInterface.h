@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "DamageInterface.generated.h"
+#include "ScoreInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UDamageInterface : public UInterface
+class UScoreInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,14 +16,13 @@ class UDamageInterface : public UInterface
 /**
  * 
  */
-class ATARI2600CENTIPEDE_API IDamageInterface
+class ATARI2600CENTIPEDE_API IScoreInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
-	// Called when this actor receives damage
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Damage")
-	void ReceiveDamage(int DamageAmount);
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Score")
+	void Add_Score(int Amount);
 };
