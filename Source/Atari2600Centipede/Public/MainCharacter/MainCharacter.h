@@ -9,6 +9,7 @@
 #include "Camera/CentipedeCamera.h"
 #include "Core/CentipedePlayerController.h"
 #include "PaperSpriteComponent.h"
+#include "Core/CentipedeGameMode.h"
 #include "Projectile/CentipedeProjectile.h"
 #include "MainCharacter.generated.h"
 
@@ -45,8 +46,14 @@ protected:
 	ACentipedeCamera* CentipedeCameraActor;
 
 	// Camera
-	UPROPERTY()
-	ACentipedeProjectile* CentipedeProjectile;
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	TSubclassOf<ACentipedeProjectile> ProjectileClass;
+
+	// Game mode
+	ACentipedeGameMode* CentipedeGameMode;
+
+	//grid
+	FBound GridBounds;
 
 	// Pawn Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
@@ -74,4 +81,9 @@ protected:
 	void Shoot(const FInputActionValue& Value);
 
 	void InitializeCentipedeCamera();
+	void ConstraintPlayerInBounds();
+
+private:
+
+	float CustomZConstraint = 300.0f;
 };

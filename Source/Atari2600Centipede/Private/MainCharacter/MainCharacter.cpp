@@ -2,10 +2,12 @@
 
 
 #include "MainCharacter/MainCharacter.h"
-
-#include "CentipedeLoggerCategories.h"
+#include "Log/CentipedeLoggerCategories.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Core/CentipedeGameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "Log/CentipedeLoggerCategories.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -21,6 +23,10 @@ AMainCharacter::AMainCharacter()
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	MovementComponent->UpdatedComponent = RootScene;
+
+	MovementComponent->Acceleration = 10000.0f;
+	MovementComponent->Deceleration = 15000.0f;
+	MovementComponent->MaxSpeed = 2000.0f;
 	
 
 }
@@ -29,7 +35,10 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	InitializeCentipedeCamera();
+	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
 }
 
 void AMainCharacter::PossessedBy(AController* NewController)
@@ -54,6 +63,8 @@ void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ConstraintPlayerInBounds();
+	
 }
 
 // Called to bind functionality to input
@@ -87,14 +98,14 @@ void AMainCharacter::Shoot(const FInputActionValue& Value)
 {
 	if (!GetWorld()) return;
 
-	const FVector CameraLocation = this->GetActorLocation();
-	const FRotator CameraRotation = FRotator(0.0f, 0.0f, 0.0f);
+	const FVector SpawnLocation  = this->GetActorLocation();
+	const FRotator SpawnRotation  = FRotator(0.0f, 0.0f, 0.0f);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
 
-	CentipedeProjectile = GetWorld()->SpawnActor<ACentipedeProjectile>(ACentipedeProjectile::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
+	ACentipedeProjectile* Projectile = GetWorld()->SpawnActor<ACentipedeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
 	UE_LOG(LogCentipede, Log, TEXT("Try spawn projectile"));
 }
 
@@ -102,15 +113,19 @@ void AMainCharacter::InitializeCentipedeCamera()
 {
 	if (!GetWorld()) return;
 
-	FVector CameraLocation(500.f, 0.f, 0.f);   
-	FRotator CameraRotation(0.f, 180.f, 0.f);
+	if (CentipedeGameMode)
+	{
+		const FVector CenterLocation = CentipedeGameMode->SpawnedGrid->GetGridCenterLocation();
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
-	SpawnParams.Instigator = GetInstigator();
+		const FVector CameraLocation(500.f, CenterLocation.Y, CenterLocation.Z);   
+		const FRotator CameraRotation(0.f, 180.f, 0.f);
 
-	CentipedeCameraActor = GetWorld()->SpawnActor<ACentipedeCamera>(ACentipedeCamera::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
 
+		CentipedeCameraActor = GetWorld()->SpawnActor<ACentipedeCamera>(ACentipedeCamera::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
+	}
 
 	if (CentipedeCameraActor)
 	{
@@ -119,6 +134,14 @@ void AMainCharacter::InitializeCentipedeCamera()
 			PC->SetViewTarget(CentipedeCameraActor);
 		}
 	}
+}
+
+void AMainCharacter::ConstraintPlayerInBounds()
+{
+	const float ClampedLocationY = FMath::Clamp(this->GetActorLocation().Y, GridBounds.Min.Y, GridBounds.Max.Y);
+	const float ClampedLocationZ = FMath::Clamp(this->GetActorLocation().Z, GridBounds.Min.Z, CustomZConstraint);
+	
+	this->SetActorLocation(FVector(this->GetActorLocation().X, ClampedLocationY,ClampedLocationZ));
 }
 
 
