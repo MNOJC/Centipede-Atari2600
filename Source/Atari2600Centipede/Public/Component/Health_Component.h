@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DamageInterface.h"
 #include "Components/ActorComponent.h"
 #include "Health_Component.generated.h"
 

@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CentipedeGameInstance.h"
-#include "CentipedeLoggerCategories.h"
+#include "Core/CentipedeGameInstance.h"
+#include "Log/CentipedeLoggerCategories.h"
 
 void UCentipedeGameInstance::AddScore(int Amount)
 {

@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Health_Component.h"
-#include "CentipedeLoggerCategories.h"
+#include "Component/Health_Component.h"
+#include "Log/CentipedeLoggerCategories.h"
 
 // Sets default values for this component's properties
 UHealth_Component::UHealth_Component()
