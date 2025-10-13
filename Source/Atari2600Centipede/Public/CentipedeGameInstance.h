@@ -16,7 +16,7 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance
 
 	protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Score")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Score")
 	int Score;
 
 	public:
@@ -27,4 +27,7 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance
 	
 	UFUNCTION(BlueprintCallable, Category = "Centipede")
 	void AddScore(int Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Centipede")
+	void SetScore(int _Score) {Score = _Score;}
 };
