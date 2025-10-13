@@ -9,6 +9,7 @@
 #include "Camera/CentipedeCamera.h"
 #include "Core/CentipedePlayerController.h"
 #include "PaperSpriteComponent.h"
+#include "Projectile/CentipedeProjectile.h"
 #include "MainCharacter.generated.h"
 
 class UInputMappingContext;
@@ -42,6 +43,10 @@ protected:
 	// Camera
 	UPROPERTY()
 	ACentipedeCamera* CentipedeCameraActor;
+
+	// Camera
+	UPROPERTY()
+	ACentipedeProjectile* CentipedeProjectile;
 
 	// Pawn Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")

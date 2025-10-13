@@ -2,6 +2,8 @@
 
 
 #include "MainCharacter/MainCharacter.h"
+
+#include "CentipedeLoggerCategories.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -83,7 +85,17 @@ void AMainCharacter::Move(const FInputActionValue& Value)
 
 void AMainCharacter::Shoot(const FInputActionValue& Value)
 {
-	
+	if (!GetWorld()) return;
+
+	const FVector CameraLocation = this->GetActorLocation();
+	const FRotator CameraRotation = FRotator(0.0f, 0.0f, 0.0f);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
+	CentipedeProjectile = GetWorld()->SpawnActor<ACentipedeProjectile>(ACentipedeProjectile::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
+	UE_LOG(LogCentipede, Log, TEXT("Try spawn projectile"));
 }
 
 void AMainCharacter::InitializeCentipedeCamera()

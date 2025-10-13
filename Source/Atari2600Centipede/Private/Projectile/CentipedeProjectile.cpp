@@ -17,6 +17,12 @@ ACentipedeProjectile::ACentipedeProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->UpdatedComponent = RootScene;
+	ProjectileMovement->InitialSpeed = 5000.0f;
+	ProjectileMovement->MaxSpeed = 5000.0f;
+	ProjectileMovement->ProjectileGravityScale = 0.0f;
+	ProjectileMovement->SetVelocityInLocalSpace(FVector(0.0f, 0.0f, 1.0f));
+	ProjectileMovement->SetPlaneConstraintEnabled(true);
+	ProjectileMovement->SetPlaneConstraintNormal(FVector(1.0f, 0.0f, 0.0f));
 
 }
 
