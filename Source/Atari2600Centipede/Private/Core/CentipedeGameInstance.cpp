@@ -8,4 +8,5 @@ void UCentipedeGameInstance::AddScore(int Amount)
 {
 	Score += Amount;
 	UE_LOG(LogCentipede, Log, TEXT("Gain Score : %d   |   New Score: %d"),Amount, Score);
+	OnScoreChanged.Broadcast(Score);
 }
