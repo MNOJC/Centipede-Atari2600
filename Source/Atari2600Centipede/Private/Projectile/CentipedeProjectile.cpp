@@ -2,6 +2,7 @@
 
 
 #include "Projectile/CentipedeProjectile.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACentipedeProjectile::ACentipedeProjectile()
@@ -14,6 +15,7 @@ ACentipedeProjectile::ACentipedeProjectile()
 
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSprite"));
 	SpriteComponent->SetupAttachment(RootScene);
+	SpriteComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->UpdatedComponent = RootScene;
@@ -30,6 +32,8 @@ ACentipedeProjectile::ACentipedeProjectile()
 void ACentipedeProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	
 }
 
@@ -37,6 +41,19 @@ void ACentipedeProjectile::BeginPlay()
 void ACentipedeProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CheckProjectileConstraints();
 
+}
+
+void ACentipedeProjectile::CheckProjectileConstraints()
+{
+	if (CentipedeGameMode)
+	{
+		if (this->GetActorLocation().Z >= CentipedeGameMode->SpawnedGrid->GetGridBounds().Max.Z)
+		{
+			this->Destroy();
+		}
+	
+	}
 }
 

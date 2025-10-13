@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PaperSpriteComponent.h"
+#include "Core/CentipedeGameMode.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "CentipedeProjectile.generated.h"
@@ -35,5 +36,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UProjectileMovementComponent* ProjectileMovement;
+
+private:
+
+	ACentipedeGameMode* CentipedeGameMode;
+	void CheckProjectileConstraints();
 
 };
