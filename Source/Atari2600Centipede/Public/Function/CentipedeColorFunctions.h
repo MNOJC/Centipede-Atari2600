@@ -6,6 +6,6 @@
 
 namespace ColorHelper
 {
-	void ApplyCentipedeColorMob(const UCentipedColorDA& ColorDA, UMaterialParameterCollectionInstance* MPCInstance);
-	void ApplyCentipedeColorTarget(const UCentipedColorDA& ColorDA, UMaterialInstanceDynamic* BaseInstance);
+	void ApplyCentipedeColorMob(const TSoftObjectPtr<UCentipedColorDA> ColorDA, UMaterialParameterCollectionInstance* MPCInstance);
+	void ApplyCentipedeColorTarget(const TSoftObjectPtr<UCentipedColorDA> ColorDA, UMaterialInstanceDynamic* BaseInstance);
 }

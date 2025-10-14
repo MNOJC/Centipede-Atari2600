@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "PaperSprite.h"
 #include "Core/CentipedeGameMode.h"
+#include "Interface/MaterialTransfert.h"
 #include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
 
@@ -33,6 +34,7 @@ AMainCharacter::AMainCharacter()
 	MovementComponent->Acceleration = 15000.0f;
 	MovementComponent->Deceleration = 15000.0f;
 	MovementComponent->MaxSpeed = 2000.0f;
+	
 
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> MovementActionFinder(TEXT("/Game/Input/InputActions/IA_Movement.IA_Movement"));
@@ -53,6 +55,7 @@ void AMainCharacter::BeginPlay()
 	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	InitializeCentipedeCamera();
 	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
+	SpriteComponent->SetMaterial(0,IMaterialTransfert::Execute_GetMaterialByTag(GetGameInstance(),FName("Player")));
 }
 
 void AMainCharacter::PossessedBy(AController* NewController)

@@ -21,11 +21,21 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 
 	protected:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Materials")
+	UMaterialInstanceDynamic* PlayerMat;
+
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Materials")
+	UMaterialParameterCollectionInstance* MPCi;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Materials")
+	UMaterialInstanceDynamic* CentipedeMat;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Score")
 	int Score;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
-	int Level = 1;
+	int Level = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Colors")
 	TArray<TSoftObjectPtr<UCentipedColorDA>> T_Colors_ptr;
@@ -61,5 +71,8 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 	virtual void NextLevel_Implementation() override;
 
 	virtual UMaterialInstanceDynamic* GetMaterialByTag_Implementation(FName Tag) override;
+
+	UFUNCTION(Exec)
+	void SkipLevel();
 	
 };

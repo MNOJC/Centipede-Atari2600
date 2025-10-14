@@ -4,6 +4,8 @@
 #include "Core/CentipedeGameInstance.h"
 #include "Log/CentipedeLoggerCategories.h"
 #include "Function/CentipedeColorFunctions.h"
+#include "Materials/MaterialParameterCollection.h"
+
 
 UCentipedeGameInstance::UCentipedeGameInstance()
 {
@@ -18,10 +20,10 @@ UCentipedeGameInstance::UCentipedeGameInstance()
 
 	UMaterialInterface* BaseMat = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Art/Materials/M_Sprites_Centipede.M_Sprites_Centipede"));
 
-	UMaterialInstanceDynamic* PlayerMat = UMaterialInstanceDynamic::Create(BaseMat, this);
+	PlayerMat = UMaterialInstanceDynamic::Create(BaseMat, this);
 	AddMaterial(FName("Player"), PlayerMat);
 
-	UMaterialInstanceDynamic* CentipedeMat = UMaterialInstanceDynamic::Create(BaseMat, this);
+	CentipedeMat = UMaterialInstanceDynamic::Create(BaseMat, this);
 	AddMaterial(FName("Centipede"), CentipedeMat);
 	
 }
@@ -51,6 +53,13 @@ void UCentipedeGameInstance::Add_Score_Implementation(int Amount)
 void UCentipedeGameInstance::NextLevel_Implementation()
 {
 	Level++;
+
+	if (!MPCi)
+		MPCi =  GetWorld()->GetParameterCollectionInstance(LoadObject<UMaterialParameterCollection>(nullptr,TEXT("/Game/Art/MPC_Colors.MPC_Colors")));
+
+	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
+	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
+	ColorHelper::ApplyCentipedeColorMob(T_Colors_ptr[Level % (T_Colors_ptr.Num())], MPCi);
 }
 
 UMaterialInstanceDynamic* UCentipedeGameInstance::GetMaterialByTag_Implementation(FName Tag)
@@ -60,4 +69,10 @@ UMaterialInstanceDynamic* UCentipedeGameInstance::GetMaterialByTag_Implementatio
 		return MaterialMap[Tag];
 	}
 	return nullptr;
+}
+
+void UCentipedeGameInstance::SkipLevel()
+{
+	UE_LOG(LogCentipede, Log, TEXT("Skip Level: %d"), Level);
+	NextLevel_Implementation();
 }

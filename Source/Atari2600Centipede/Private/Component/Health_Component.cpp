@@ -21,11 +21,11 @@ void UHealth_Component::BeginPlay()
 	Health = DefaultHealth;
 }
 
-void UHealth_Component::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void UHealth_Component::BeginDestroy()
 {
-	Super::EndPlay(EndPlayReason);
-	UE_LOG(LogCentipede, Log, TEXT("%s was killed"), *GetOwner()->GetName() );
+	Super::BeginDestroy();
 }
+
 
 void UHealth_Component::Damage(int DamageAmount)
 {
