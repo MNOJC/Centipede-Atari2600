@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "ScoreInterface.generated.h"
+#include "MaterialTransfert.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UScoreInterface : public UInterface
+class UMaterialTransfert : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,17 +16,12 @@ class UScoreInterface : public UInterface
 /**
  * 
  */
-class ATARI2600CENTIPEDE_API IScoreInterface
+class ATARI2600CENTIPEDE_API IMaterialTransfert
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Score")
-	void Add_Score(int Amount);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Level")
-	void NextLevel();
-	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Materials")
+	UMaterialInstanceDynamic* GetMaterialByTag(FName Tag);
 };

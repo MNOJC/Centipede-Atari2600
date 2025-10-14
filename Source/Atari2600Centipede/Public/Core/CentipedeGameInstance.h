@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DataAsset/CentipedColorDA.h"
 #include "Engine/GameInstance.h"
+#include "Interface/MaterialTransfert.h"
 #include "Interface/ScoreInterface.h"
 #include "CentipedeGameInstance.generated.h"
 
@@ -14,7 +15,7 @@
 
 
 UCLASS()
-class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, public IScoreInterface
+class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, public IScoreInterface, public IMaterialTransfert
 {
 	GENERATED_BODY()
 
@@ -27,7 +28,12 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 	int Level = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Colors")
-	TArray<UCentipedColorDA*> Colors;
+	TArray<TSoftObjectPtr<UCentipedColorDA>> T_Colors_ptr;
+
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Colors")
+	TMap<FName, UMaterialInstanceDynamic*> MaterialMap;
+
 	
 	public:
 
@@ -46,9 +52,14 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreChanged, int, NewScore);
 	UPROPERTY(BlueprintAssignable)
 	FOnScoreChanged OnScoreChanged;
+	
+	UFUNCTION(BlueprintCallable, Category = "Materials")
+	void AddMaterial(FName Tag, UMaterialInstanceDynamic* Material);
 
 	virtual void Add_Score_Implementation(int Amount) override;
 
-	virtual void NextLevel_Implementation();
+	virtual void NextLevel_Implementation() override;
+
+	virtual UMaterialInstanceDynamic* GetMaterialByTag_Implementation(FName Tag) override;
 	
 };

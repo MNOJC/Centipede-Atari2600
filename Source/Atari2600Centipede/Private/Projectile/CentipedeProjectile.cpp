@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "PaperSprite.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Projectile/CentipedeProjectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "PaperSprite.h"
+#include "UObject/ConstructorHelpers.h"
 
 // Sets default values
 ACentipedeProjectile::ACentipedeProjectile()

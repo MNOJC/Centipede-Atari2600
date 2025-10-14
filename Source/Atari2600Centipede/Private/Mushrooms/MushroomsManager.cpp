@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Mushrooms/MushroomsManager.h"
 #include "Mushrooms/Mushrooms.h"
 #include "Algo/RandomShuffle.h"
-#include "Mushrooms/MushroomsManager.h"
 
 // Sets default values
 AMushroomsManager::AMushroomsManager()
