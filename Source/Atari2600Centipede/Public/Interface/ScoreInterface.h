@@ -25,4 +25,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Score")
 	void Add_Score(int Amount);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Level")
+	void NextLevel();
 };

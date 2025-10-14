@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataAsset/CentipedColorDA.h"
 #include "Engine/GameInstance.h"
 #include "Interface/ScoreInterface.h"
 #include "CentipedeGameInstance.generated.h"
@@ -21,9 +22,17 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Score")
 	int Score;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
+	int Level = 1;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Colors")
+	TArray<UCentipedColorDA*> Colors;
+	
 	public:
 
+	UCentipedeGameInstance();
+	
 	UFUNCTION(BlueprintCallable, Category = "Centipede")
 	int GetScore() const {return Score;}
 
@@ -39,5 +48,7 @@ class ATARI2600CENTIPEDE_API UCentipedeGameInstance : public UGameInstance, publ
 	FOnScoreChanged OnScoreChanged;
 
 	virtual void Add_Score_Implementation(int Amount) override;
+
+	virtual void NextLevel_Implementation();
 	
 };

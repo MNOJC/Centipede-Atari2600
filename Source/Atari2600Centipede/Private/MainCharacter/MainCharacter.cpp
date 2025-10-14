@@ -24,7 +24,7 @@ AMainCharacter::AMainCharacter()
 	SpriteComponent->SetSprite(LoadObject<UPaperSprite>(nullptr,TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Snake_2.T_Snake_2")));
 	SpriteComponent->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Art/Materials/M_Sprites_Centipede.M_Sprites_Centipede")));
 	SpriteComponent->SetRelativeScale3D(FVector(10,10,10));
-	SpriteComponent->SetRelativeRotation(FRotator(0, 0, -90));
+	SpriteComponent->SetRelativeRotation(FRotator(0, -90, 0));
 	
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	MovementComponent->UpdatedComponent = RootScene;
