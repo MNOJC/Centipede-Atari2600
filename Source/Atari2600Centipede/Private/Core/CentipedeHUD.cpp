@@ -2,6 +2,8 @@
 
 
 #include "Core/CentipedeHUD.h"
+#include "Blueprint/UserWidget.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Log/CentipedeLoggerCategories.h"
 
 void ACentipedeHUD::BeginPlay()
@@ -9,11 +11,17 @@ void ACentipedeHUD::BeginPlay()
 	Super::BeginPlay();
 	
 	APlayerController* PlayerController = GetOwningPlayerController();
+	
+	TSubclassOf<UUserWidget> LoadedHUDClass = LoadClass<UUserWidget>(
+		nullptr,
+		TEXT("/Game/Core/HUD/WBP_Centipede_HUD.WBP_Centipede_HUD_C")
+	);
+	
 	if (!PlayerController)
 	{
 		UE_LOG(LogCentipede,Warning,TEXT("PlayerController is null, can't create HUD"));
 	}
-	UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PlayerController, CentipedePlayerHUD);
+	UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PlayerController, LoadedHUDClass);
 
 	if (PlayerHUD)
 	{

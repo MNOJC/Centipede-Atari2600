@@ -45,10 +45,6 @@ protected:
 	UPROPERTY()
 	ACentipedeCamera* CentipedeCameraActor;
 
-	// Camera
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
-	TSubclassOf<ACentipedeProjectile> ProjectileClass;
-
 	// Game mode
 	ACentipedeGameMode* CentipedeGameMode;
 
@@ -67,8 +63,6 @@ protected:
 
 
 	//Inputs
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
-	UInputMappingContext* DefaultMappingContext;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
 	UInputAction* IA_Movement;

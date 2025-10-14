@@ -14,4 +14,14 @@ class ATARI2600CENTIPEDE_API ACentipedePlayerController : public APlayerControll
 {
 	GENERATED_BODY()
 	
+public:
+	
+	ACentipedePlayerController();
+
+protected:
+	
+	virtual void SetupInputComponent() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputMappingContext* DefaultMappingContext;
 };

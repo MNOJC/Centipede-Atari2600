@@ -20,6 +20,8 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	ACentipedeGameMode();
+
 public:
 
 	// Grid
@@ -27,10 +29,6 @@ public:
 
 	void SpawnAndInitializeMushroomsManager();
 	
-	UPROPERTY(EditDefaultsOnly, Category="Grid")
-	TSubclassOf<ACentipedeGridGenerator> GridClass;
-
-
  	TSoftObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
 	TSoftObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
 

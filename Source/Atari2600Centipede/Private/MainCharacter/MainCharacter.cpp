@@ -33,6 +33,14 @@ AMainCharacter::AMainCharacter()
 	MovementComponent->Acceleration = 15000.0f;
 	MovementComponent->Deceleration = 15000.0f;
 	MovementComponent->MaxSpeed = 2000.0f;
+
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> MovementActionFinder(TEXT("/Game/Input/InputActions/IA_Movement.IA_Movement"));
+	IA_Movement = MovementActionFinder.Object;
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> ShootActionFinder(TEXT("/Game/Input/InputActions/IA_Shoot.IA_Shoot"));
+	IA_Shoot = ShootActionFinder.Object;
+
 	
 
 }
@@ -50,18 +58,6 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-	if (ACentipedePlayerController* PC = Cast<ACentipedePlayerController>(NewController))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-		{
-			if (DefaultMappingContext)
-			{
-				Subsystem->AddMappingContext(DefaultMappingContext, 0);
-			}
-		}
-	}
-	
 }
 
 // Called every frame
@@ -98,6 +94,7 @@ void AMainCharacter::Move(const FInputActionValue& Value)
 	
 	AddMovementInput(FVector(0, 1, 0), MovementVector.X, true);
 	AddMovementInput(FVector(0, 0, 1), MovementVector.Y, true);
+	
 }
 
 void AMainCharacter::Shoot(const FInputActionValue& Value)
