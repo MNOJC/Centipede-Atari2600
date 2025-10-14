@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
+#include "PaperSprite.h"
+#include "Projectile/CentipedeProjectile.h"
 #include "Mushrooms.generated.h"
+
 
 class UPaperSpriteComponent;
 
@@ -33,6 +36,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UPaperSpriteComponent* SpriteComponent;
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 
 };

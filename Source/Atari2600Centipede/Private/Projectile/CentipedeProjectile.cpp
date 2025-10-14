@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "PaperSprite.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Projectile/CentipedeProjectile.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -15,7 +16,15 @@ ACentipedeProjectile::ACentipedeProjectile()
 
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSprite"));
 	SpriteComponent->SetupAttachment(RootScene);
+	
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteAsset(TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Snake_1.T_Snake_1"));
+	SpriteComponent->SetSprite(SpriteAsset.Object);
+	
 	SpriteComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	SpriteComponent->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
+	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	SpriteComponent->SetCollisionResponseToAllChannels(ECR_Block);
+	SpriteComponent->SetNotifyRigidBodyCollision(true);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->UpdatedComponent = RootScene;
@@ -25,6 +34,7 @@ ACentipedeProjectile::ACentipedeProjectile()
 	ProjectileMovement->SetVelocityInLocalSpace(FVector(0.0f, 0.0f, 1.0f));
 	ProjectileMovement->SetPlaneConstraintEnabled(true);
 	ProjectileMovement->SetPlaneConstraintNormal(FVector(1.0f, 0.0f, 0.0f));
+	
 
 }
 

@@ -9,6 +9,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "CentipedeProjectile.generated.h"
 
+
 UCLASS()
 class ATARI2600CENTIPEDE_API ACentipedeProjectile : public AActor
 {
@@ -39,7 +40,7 @@ protected:
 
 private:
 
-	ACentipedeGameMode* CentipedeGameMode;
+	TSoftObjectPtr<ACentipedeGameMode> CentipedeGameMode;
 	void CheckProjectileConstraints();
 
 };

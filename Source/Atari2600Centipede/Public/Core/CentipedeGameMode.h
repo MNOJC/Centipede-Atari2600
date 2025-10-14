@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Grid/CentipedeGridGenerator.h"
+#include "Mushrooms/MushroomsManager.h"
 #include "CentipedeGameMode.generated.h"
 
 /**
@@ -23,11 +24,16 @@ public:
 
 	// Grid
 	void SpawnAndInitializeGrid();
+
+	void SpawnAndInitializeMushroomsManager();
 	
 	UPROPERTY(EditDefaultsOnly, Category="Grid")
 	TSubclassOf<ACentipedeGridGenerator> GridClass;
 
-	UPROPERTY()
-	ACentipedeGridGenerator* SpawnedGrid;
+
+ 	TSoftObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
+	TSoftObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
+
+	TArray<FVector> GridPoints;
 	
 };

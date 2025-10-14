@@ -5,7 +5,6 @@
 #include "Log/CentipedeLoggerCategories.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "PaperSprite.h"
 #include "Core/CentipedeGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
@@ -21,15 +20,11 @@ AMainCharacter::AMainCharacter()
 
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSprite"));
 	SpriteComponent->SetupAttachment(RootScene);
-	SpriteComponent->SetSprite(LoadObject<UPaperSprite>(nullptr,TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Snake_2.T_Snake_2")));
-	SpriteComponent->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Art/Materials/M_Sprites_Centipede.M_Sprites_Centipede")));
-	SpriteComponent->SetRelativeScale3D(FVector(10,10,10));
-	SpriteComponent->SetRelativeRotation(FRotator(0, -90, 0));
-	
+
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	MovementComponent->UpdatedComponent = RootScene;
 
-	MovementComponent->Acceleration = 10000.0f;
+	MovementComponent->Acceleration = 15000.0f;
 	MovementComponent->Deceleration = 15000.0f;
 	MovementComponent->MaxSpeed = 2000.0f;
 	
@@ -110,7 +105,7 @@ void AMainCharacter::Shoot(const FInputActionValue& Value)
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
 
-	ACentipedeProjectile* Projectile = GetWorld()->SpawnActor<ACentipedeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+	ACentipedeProjectile* Projectile = GetWorld()->SpawnActor<ACentipedeProjectile>(ACentipedeProjectile::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
 	UE_LOG(LogCentipede, Log, TEXT("Try spawn projectile"));
 }
 

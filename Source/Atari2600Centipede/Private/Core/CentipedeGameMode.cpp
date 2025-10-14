@@ -7,6 +7,7 @@ void ACentipedeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	SpawnAndInitializeGrid();
+	SpawnAndInitializeMushroomsManager();
 }
 
 void ACentipedeGameMode::SpawnAndInitializeGrid()
@@ -20,6 +21,27 @@ void ACentipedeGameMode::SpawnAndInitializeGrid()
 	SpawnParams.Owner = this;
 
 	SpawnedGrid = GetWorld()->SpawnActor<ACentipedeGridGenerator>(GridClass, SpawnLocation, SpawnRotation, SpawnParams);
-	SpawnedGrid->GenerateGrid();
+	GridPoints = SpawnedGrid->GenerateGrid();
+	
+}
 
+void ACentipedeGameMode::SpawnAndInitializeMushroomsManager()
+{
+	
+	if (!GetWorld()) return;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	const FVector SpawnLocation = FVector::ZeroVector;      
+	const FRotator SpawnRotation = FRotator::ZeroRotator;
+
+	SpawnedMushroomsManager = GetWorld()->SpawnActor<AMushroomsManager>(
+		AMushroomsManager::StaticClass(),
+		SpawnLocation,
+		SpawnRotation,
+		SpawnParams
+	);
+
+	SpawnedMushroomsManager->GenerateMushroomsOnGrid(GridPoints, 28, 32);
 }

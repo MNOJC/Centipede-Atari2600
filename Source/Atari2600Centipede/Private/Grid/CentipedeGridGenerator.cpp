@@ -28,8 +28,10 @@ void ACentipedeGridGenerator::Tick(float DeltaTime)
 
 }
 
-void ACentipedeGridGenerator::GenerateGrid()
+TArray<FVector> ACentipedeGridGenerator::GenerateGrid()
 {
+	TArray<FVector> GridPoints;
+	
 	if (SizeY > 0 && SizeZ > 0 && CellSize > 0)
 	{
 		for (int32 i = 0; SizeZ > i; i++)
@@ -39,10 +41,13 @@ void ACentipedeGridGenerator::GenerateGrid()
 				const FVector CellLocation = FVector(0.0f, y * CellSize, i * CellSize);
 				
 				UKismetSystemLibrary::DrawDebugCircle(GetWorld(), CellLocation, 20.0f, 4, FLinearColor::Yellow, 99999.0f, 6.0f, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), false);
+				GridPoints.Add(CellLocation);
 			}
 		}
 		
 	}
+
+	return GridPoints;
 }
 
 FVector ACentipedeGridGenerator::GetGridCenterLocation()
