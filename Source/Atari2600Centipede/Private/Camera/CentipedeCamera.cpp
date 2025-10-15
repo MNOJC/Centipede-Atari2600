@@ -17,6 +17,7 @@ ACentipedeCamera::ACentipedeCamera()
 	CameraComponent->SetProjectionMode(ECameraProjectionMode::Orthographic);
 	CameraComponent->OrthoWidth = 2304.0f;
 	CameraComponent->SetAspectRatio(4.0f / 3.0f);
+	CameraComponent->bConstrainAspectRatio = true;
 
 }
 
