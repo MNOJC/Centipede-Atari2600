@@ -37,4 +37,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UCentipedeMovementComponent* CentipedeMovementComponent;
 
+	
+
+private:
+
+	UFUNCTION()
+	void OnCentipedeMovementComplete(FVector NewLocation);
+
+	FTimerHandle MyTimerHandle;
+	void StartCentipedeMovement();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 };

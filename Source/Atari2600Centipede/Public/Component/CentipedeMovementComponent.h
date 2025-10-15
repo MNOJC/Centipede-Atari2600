@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Grid/CentipedeGridGenerator.h"
 #include "Components/ActorComponent.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 #include "CentipedeMovementComponent.generated.h"
 
 UENUM(BlueprintType)
@@ -37,8 +38,9 @@ public:
 
 	TObjectPtr<ACentipedeGridGenerator> GridReference;
 	
-	float MoveSpeed = 0.1f;
+	float MoveSpeed = 500.0f;
 	bool bIsMoving = false;
+	EGridDirection CurrentDirection;
 	
 	FOnMovementComplete OnMovementComplete;
 
@@ -47,11 +49,17 @@ private:
 	FVector StartLocation;
 	FVector TargetLocation;
 	float MoveProgress = 0.f;
+	EGridDirection LastHorizontal;
+	float TravelDistance = 0.f;
+	float TravelTime = 0.f;
 
 	FVector GetDirectionVector(EGridDirection Direction) const;
+	
 	
 public:
 	
 	void MoveInDirection(EGridDirection Direction, int32 Cells);
+	void HandleMovementPattern();
+	void StopAndSnapToGrid();
 	
 };

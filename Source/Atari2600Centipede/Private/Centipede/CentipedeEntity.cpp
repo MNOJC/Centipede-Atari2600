@@ -19,6 +19,7 @@ ACentipedeEntity::ACentipedeEntity()
 	SpriteComponent->SetSprite(SpriteAsset.Object);
 	SpriteComponent->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 	SpriteComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	SpriteComponent->SetRelativeLocation(FVector(1.0f, 0.0f, 0.0f));
 	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SpriteComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 	SpriteComponent->SetGenerateOverlapEvents(true);
@@ -32,8 +33,18 @@ ACentipedeEntity::ACentipedeEntity()
 void ACentipedeEntity::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &ACentipedeEntity::OnBeginOverlap);
+	CentipedeMovementComponent->OnMovementComplete.AddDynamic(this, &ACentipedeEntity::OnCentipedeMovementComplete);
 
-	CentipedeMovementComponent->MoveInDirection(EGridDirection::Right, 40);
+	GetWorld()->GetTimerManager().SetTimer(
+		MyTimerHandle,               
+		this,                           
+		&ACentipedeEntity::StartCentipedeMovement,
+		2.0f,                           
+		false                          
+	);
+	
 }
 
 // Called every frame
@@ -41,5 +52,21 @@ void ACentipedeEntity::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACentipedeEntity::OnCentipedeMovementComplete(FVector NewLocation)
+{
+	CentipedeMovementComponent->HandleMovementPattern();
+}
+
+void ACentipedeEntity::StartCentipedeMovement()
+{
+	CentipedeMovementComponent->CurrentDirection = EGridDirection::Right;
+	CentipedeMovementComponent->HandleMovementPattern();
+}
+
+void ACentipedeEntity::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	CentipedeMovementComponent->StopAndSnapToGrid();
 }
 

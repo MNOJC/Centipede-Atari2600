@@ -2,8 +2,8 @@
 
 
 #include "Component/CentipedeMovementComponent.h"
-
 #include "Kismet/GameplayStatics.h"
+#include "Mushrooms/Mushrooms.h"
 
 // Sets default values for this component's properties
 UCentipedeMovementComponent::UCentipedeMovementComponent()
@@ -36,7 +36,7 @@ void UCentipedeMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 
 	if (bIsMoving)
 	{
-		MoveProgress += DeltaTime * MoveSpeed;
+		MoveProgress += DeltaTime / TravelTime;
 
 		FVector NewLocation = FMath::Lerp(StartLocation, TargetLocation, MoveProgress);
 		GetOwner()->SetActorLocation(NewLocation);
@@ -56,8 +56,8 @@ FVector UCentipedeMovementComponent::GetDirectionVector(EGridDirection Direction
 {
 	switch (Direction)
 	{
-	case EGridDirection::Up:    return FVector::ForwardVector;
-	case EGridDirection::Down:  return -FVector::ForwardVector;
+	case EGridDirection::Up:    return FVector::UpVector;
+	case EGridDirection::Down:  return -FVector::UpVector;
 	case EGridDirection::Left:  return FVector::RightVector;
 	case EGridDirection::Right: return -FVector::RightVector;
 	default:                    return FVector::ZeroVector;
@@ -66,15 +66,89 @@ FVector UCentipedeMovementComponent::GetDirectionVector(EGridDirection Direction
 
 void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int32 Cells)
 {
-	if (!GridReference || bIsMoving) return;
+	if (!GridReference || bIsMoving)
+		return;
+	
+	CurrentDirection = Direction;
+
+	if (Direction == EGridDirection::Right || Direction == EGridDirection::Left)
+	{
+		LastHorizontal = Direction;
+	}
 
 	FVector DirVector = GetDirectionVector(Direction);
 	float CellSize = GridReference->CellSize;
 
 	StartLocation = GetOwner()->GetActorLocation();
 	TargetLocation = StartLocation + DirVector * CellSize * Cells;
+	
+	FVector ClampedLocation;
+	
+	ClampedLocation.X = FMath::Clamp(TargetLocation.X, GridReference->GetGridBounds().Min.X, GridReference->GetGridBounds().Max.X);
+	ClampedLocation.Y = FMath::Clamp(TargetLocation.Y, GridReference->GetGridBounds().Min.Y, GridReference->GetGridBounds().Max.Y);
+	ClampedLocation.Z = FMath::Clamp(TargetLocation.Z, GridReference->GetGridBounds().Min.Z, GridReference->GetGridBounds().Max.Z);
 
+	TargetLocation = ClampedLocation;
+
+	TravelDistance = FVector::Distance(StartLocation, TargetLocation);
+	TravelTime = TravelDistance / MoveSpeed; 
 	MoveProgress = 0.f;
 	bIsMoving = true;
 }
 
+
+void UCentipedeMovementComponent::HandleMovementPattern()
+{
+	if (bIsMoving) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Current Direction: %s"), *UEnum::GetValueAsString(CurrentDirection));
+
+	
+	switch (CurrentDirection)
+	{
+	case EGridDirection::Right:
+		MoveInDirection(EGridDirection::Right, 99);
+		CurrentDirection = EGridDirection::Down;
+		break;
+
+	case EGridDirection::Left:
+		MoveInDirection(EGridDirection::Left, 99);
+		CurrentDirection = EGridDirection::Down;
+		break;
+
+	case EGridDirection::Down:
+		
+		MoveInDirection(EGridDirection::Down, 2);
+
+		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
+		LastHorizontal = CurrentDirection;
+		break;
+	}
+}
+
+void UCentipedeMovementComponent::StopAndSnapToGrid()
+{
+	if (!GridReference)
+		return;
+	
+	bIsMoving = false;
+	MoveProgress = 0.f;
+	
+	FVector CurrentLocation = GetOwner()->GetActorLocation();
+	const float CellSize = GridReference->CellSize;
+	
+	FVector SnappedLocation;
+	SnappedLocation.X = FMath::GridSnap(CurrentLocation.X, CellSize);
+	SnappedLocation.Y = FMath::GridSnap(CurrentLocation.Y, CellSize);
+	SnappedLocation.Z = FMath::GridSnap(CurrentLocation.Z, CellSize);
+	
+	const FBound Bounds = GridReference->GetGridBounds();
+	SnappedLocation.X = FMath::Clamp(SnappedLocation.X, Bounds.Min.X, Bounds.Max.X);
+	SnappedLocation.Y = FMath::Clamp(SnappedLocation.Y, Bounds.Min.Y, Bounds.Max.Y);
+	SnappedLocation.Z = FMath::Clamp(SnappedLocation.Z, Bounds.Min.Z, Bounds.Max.Z);
+
+	GetOwner()->SetActorLocation(SnappedLocation);
+	
+	OnMovementComplete.Broadcast(SnappedLocation);
+	
+}
