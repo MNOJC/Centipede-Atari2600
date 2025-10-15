@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Centipede/CentipedeEntity.h"
 #include "GameFramework/GameModeBase.h"
 #include "Grid/CentipedeGridGenerator.h"
 #include "Mushrooms/MushroomsManager.h"
@@ -26,11 +27,12 @@ public:
 
 	// Grid
 	void SpawnAndInitializeGrid();
-
+	void SpawnCentipedeEntity();
 	void SpawnAndInitializeMushroomsManager();
 	
  	TSoftObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
 	TSoftObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
+	TSoftObjectPtr<ACentipedeEntity> SpawnedCentipedeEntity; //Temp plus tard remplacer par le mananager centipede
 
 	TArray<FVector> GridPoints;
 	
