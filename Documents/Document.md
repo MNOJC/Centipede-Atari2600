@@ -2,7 +2,7 @@
 ```md
 packages/button
 ├── lib
-│   ├── [button.d.ts](README.md)
+│   ├── [button.d.ts](../README.md)
 │   ├── button.js
 │   ├── button.js.map
 │   ├── button.stories.d.ts
