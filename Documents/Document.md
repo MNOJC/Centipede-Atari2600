@@ -1,11 +1,20 @@
-<div style="position: fixed; right: 20px; top: 100px; width: 200px; background: #f8f9fa; padding: 10px; border-radius: 8px;">
-  <strong>Summary</strong>
-  <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#usage">Usage</a></li>
-  </ul>
-</div>
 
-## Introduction
-...
+```md
+packages/button
+├── lib
+│   ├── [button.d.ts](README.md)
+│   ├── button.js
+│   ├── button.js.map
+│   ├── button.stories.d.ts
+│   ├── button.stories.js
+│   ├── button.stories.js.map
+│   ├── index.d.ts
+│   ├── index.js
+│   └── index.js.map
+├── package.json
+├── src
+│   ├── button.stories.tsx
+│   ├── button.tsx
+│   └── index.ts
+└── tsconfig.json
+```
