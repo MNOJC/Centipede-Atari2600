@@ -17,7 +17,7 @@
 ### 🔧 Function
 - `CentipedeColorFunctions` - Color utility functions
 
-### 🗺️ Grid
+### ⊞ Grid
 - `CentipedeGridGenerator` - Grid generation system
 
 ### 🔌 Interface
