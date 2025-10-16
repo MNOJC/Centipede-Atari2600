@@ -24,8 +24,6 @@ void UCentipedeMovementComponent::BeginPlay()
 	ACentipedeGridGenerator* FoundGrid = Cast<ACentipedeGridGenerator>(UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass()));
 	GridReference = FoundGrid;
 	
-	
-	
 }
 
 
@@ -48,6 +46,7 @@ void UCentipedeMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 			MoveProgress = 0.f;
 			
 			OnMovementComplete.Broadcast(TargetLocation);
+			GetOwner()->SetActorEnableCollision(true);
 		}
 	}
 }
@@ -74,6 +73,10 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 	if (Direction == EGridDirection::Right || Direction == EGridDirection::Left)
 	{
 		LastHorizontal = Direction;
+	}
+	else if (Direction == EGridDirection::Down)
+	{
+		//GetOwner()->SetActorEnableCollision(false);
 	}
 
 	FVector DirVector = GetDirectionVector(Direction);
@@ -118,10 +121,11 @@ void UCentipedeMovementComponent::HandleMovementPattern()
 
 	case EGridDirection::Down:
 		
-		MoveInDirection(EGridDirection::Down, 2);
+		MoveInDirection(EGridDirection::Down, 1);
 
 		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
 		LastHorizontal = CurrentDirection;
+		
 		break;
 	}
 }
@@ -138,8 +142,8 @@ void UCentipedeMovementComponent::StopAndSnapToGrid()
 	const float CellSize = GridReference->CellSize;
 	
 	FVector SnappedLocation;
-	SnappedLocation.X = FMath::GridSnap(CurrentLocation.X, CellSize);
-	SnappedLocation.Y = FMath::GridSnap(CurrentLocation.Y, CellSize);
+	SnappedLocation.X = GetOwner()->GetActorLocation().X;
+	SnappedLocation.Y = GetOwner()->GetActorLocation().Y;
 	SnappedLocation.Z = FMath::GridSnap(CurrentLocation.Z, CellSize);
 	
 	const FBound Bounds = GridReference->GetGridBounds();

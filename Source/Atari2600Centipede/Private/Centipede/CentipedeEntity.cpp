@@ -41,7 +41,7 @@ void ACentipedeEntity::BeginPlay()
 		MyTimerHandle,               
 		this,                           
 		&ACentipedeEntity::StartCentipedeMovement,
-		2.0f,                           
+		0.2f,                           
 		false                          
 	);
 	
@@ -67,6 +67,10 @@ void ACentipedeEntity::StartCentipedeMovement()
 
 void ACentipedeEntity::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	//if (CentipedeMovementComponent->CurrentDirection == EGridDirection::Down)
+	//{
+		
+	//}
 	CentipedeMovementComponent->StopAndSnapToGrid();
 }
 
