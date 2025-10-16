@@ -74,10 +74,6 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 	{
 		LastHorizontal = Direction;
 	}
-	else if (Direction == EGridDirection::Down)
-	{
-		//GetOwner()->SetActorEnableCollision(false);
-	}
 
 	FVector DirVector = GetDirectionVector(Direction);
 	float CellSize = GridReference->CellSize;

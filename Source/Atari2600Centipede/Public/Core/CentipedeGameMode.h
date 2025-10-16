@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Centipede/CentipedeEntity.h"
+#include "Centipede/CentipedeManager.h"
 #include "GameFramework/GameModeBase.h"
 #include "Grid/CentipedeGridGenerator.h"
 #include "Mushrooms/MushroomsManager.h"
@@ -27,12 +28,12 @@ public:
 
 	// Grid
 	void SpawnAndInitializeGrid();
-	void SpawnCentipedeEntity();
+	void SpawnCentipedeManager();
 	void SpawnAndInitializeMushroomsManager();
 	
  	TSoftObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
 	TSoftObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
-	TSoftObjectPtr<ACentipedeEntity> SpawnedCentipedeEntity; //Temp plus tard remplacer par le mananager centipede
+	TSoftObjectPtr<ACentipedeManager> SpawnedCentipedeManager; 
 
 	TArray<FVector> GridPoints;
 	

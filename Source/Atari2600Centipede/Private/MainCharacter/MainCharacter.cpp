@@ -52,7 +52,7 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	CentipedeGameMode = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
 	InitializeCentipedeCamera();
 	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
 	SpriteComponent->SetMaterial(0,IMaterialTransfert::Execute_GetMaterialByTag(GetGameInstance(),FName("Player")));

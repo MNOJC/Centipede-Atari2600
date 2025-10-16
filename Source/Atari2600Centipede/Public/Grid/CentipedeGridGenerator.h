@@ -44,7 +44,7 @@ public:
 	int32 SizeZ = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	float CellSize = 125.0f;
+	float CellSize = 100.0f;
 
 	TArray<FVector> GenerateGrid();
 	FVector GetGridCenterLocation();

@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Core/CentipedeGameMode.h"
+
+#include "Centipede/CentipedeManager.h"
 #include "MainCharacter/MainCharacter.h"
 #include "Core/CentipedeHUD.h"
 
@@ -10,7 +12,7 @@ void ACentipedeGameMode::BeginPlay()
 	Super::BeginPlay();
 	SpawnAndInitializeGrid();
 	SpawnAndInitializeMushroomsManager();
-	SpawnCentipedeEntity();
+	SpawnCentipedeManager();
 }
 
 ACentipedeGameMode::ACentipedeGameMode()
@@ -35,17 +37,18 @@ void ACentipedeGameMode::SpawnAndInitializeGrid()
 	
 }
 
-void ACentipedeGameMode::SpawnCentipedeEntity()
+void ACentipedeGameMode::SpawnCentipedeManager()
 {
 	if (!GetWorld()) return;
 
-	const FVector SpawnLocation(0.f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z);
+	const FVector SpawnLocation(0.f,0.f, 0.f);
 	const FRotator SpawnRotation(0.f, 0.f, 0.f);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 
-	SpawnedCentipedeEntity = GetWorld()->SpawnActor<ACentipedeEntity>(ACentipedeEntity::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
+	SpawnedCentipedeManager = GetWorld()->SpawnActor<ACentipedeManager>(SpawnLocation, SpawnRotation, SpawnParams);
+	
 }
 
 void ACentipedeGameMode::SpawnAndInitializeMushroomsManager()
