@@ -50,6 +50,8 @@ void ACentipedeProjectile::BeginPlay()
 
 void ACentipedeProjectile::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
+	if (!OtherActor->Implements<UDamageInterface>())
+		return;
 	if (IDamageInterface::Execute_ReceiveDamage(OtherActor, 1))
 		Destroy();
 }

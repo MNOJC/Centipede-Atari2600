@@ -27,7 +27,7 @@ void UHealth_Component::BeginPlay()
 void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
-	IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), Points);
+	//IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), Points);
 }
 
 

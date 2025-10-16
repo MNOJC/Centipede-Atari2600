@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaperFlipbookComponent.h"
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
@@ -37,7 +38,7 @@ protected:
 	USceneComponent* RootScene;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	UPaperSpriteComponent* SpriteComponent;
+	UPaperFlipbookComponent* FlipbookComponent;
 
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
