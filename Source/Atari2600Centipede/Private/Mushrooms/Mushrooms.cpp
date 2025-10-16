@@ -28,6 +28,9 @@ AMushrooms::AMushrooms()
 	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SpriteComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 	SpriteComponent->SetGenerateOverlapEvents(true);
+
+	HealthComponent = CreateDefaultSubobject<UHealth_Component>(TEXT("HealthComp"));
+	HealthComponent -> SetDefaultHealth(3);
 	
 }
 
@@ -36,7 +39,6 @@ void AMushrooms::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &AMushrooms::OnBeginOverlap);
 	
 }
 
@@ -47,17 +49,10 @@ void AMushrooms::Tick(float DeltaTime)
 
 }
 
-void AMushrooms::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+bool AMushrooms::ReceiveDamage_Implementation(int DamageAmount)
 {
-	if (OtherActor && OtherActor != this)
-	{
-		if (OtherActor->IsA(ACentipedeProjectile::StaticClass()))
-		{
-			IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), 100);
-			this->Destroy();
-		}
-	}
-
+	HealthComponent->Damage(DamageAmount);
+	return true;
 }
 
 

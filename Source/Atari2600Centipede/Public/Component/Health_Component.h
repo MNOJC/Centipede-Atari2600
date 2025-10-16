@@ -27,6 +27,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
 	int Health;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	int Points;
 
 public:
 
@@ -37,6 +40,12 @@ public:
 
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
+	void SetDefaultHealth(int _Health) { DefaultHealth = _Health; }
+
+	
+	UFUNCTION(BlueprintCallable, Category = "Health")
 	bool IsDead() const { return Health <= 0.0f; }
+	
+	
 	
 };

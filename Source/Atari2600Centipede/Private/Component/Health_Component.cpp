@@ -1,6 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Component/Health_Component.h"
+
+#include "Interface/ScoreInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
 
 // Sets default values for this component's properties
@@ -24,6 +27,7 @@ void UHealth_Component::BeginPlay()
 void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
+	IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), Points)
 }
 
 

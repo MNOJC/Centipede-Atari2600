@@ -6,14 +6,16 @@
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
+#include "Interface/DamageInterface.h"
 #include "Projectile/CentipedeProjectile.h"
+#include "Component/Health_Component.h"
 #include "Mushrooms.generated.h"
 
 
 class UPaperSpriteComponent;
 
 UCLASS()
-class ATARI2600CENTIPEDE_API AMushrooms : public AActor
+class ATARI2600CENTIPEDE_API AMushrooms : public AActor, public IDamageInterface
 {
 	GENERATED_BODY()
 	
@@ -37,7 +39,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UPaperSpriteComponent* SpriteComponent;
 
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	UHealth_Component* HealthComponent;
+	
+	UFUNCTION()
+	virtual bool ReceiveDamage_Implementation(int DamageAmount) override;
 };
