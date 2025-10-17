@@ -46,7 +46,6 @@ void UCentipedeMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 			MoveProgress = 0.f;
 			
 			OnMovementComplete.Broadcast(TargetLocation);
-			GetOwner()->SetActorEnableCollision(true);
 		}
 	}
 }

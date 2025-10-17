@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Component/CentipedeMovementComponent.h"
-#include "Centipede/CentipedeSegment.h"
 #include "GameFramework/Actor.h"
 #include "CentipedeEntity.generated.h"
 
@@ -29,6 +28,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	TArray<FVector> Trail;
 
 protected:
 	

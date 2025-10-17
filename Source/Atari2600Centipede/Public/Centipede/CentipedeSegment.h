@@ -6,8 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
+#include "Centipede/CentipedeEntity.h"
 #include "Component/CentipedeMovementComponent.h"
 #include "CentipedeSegment.generated.h"
+
 
 UCLASS()
 class ATARI2600CENTIPEDE_API ACentipedeSegment : public AActor
@@ -39,6 +41,9 @@ public:
 	
 	bool bIsHead;
 
+	int32 MaxTrailLength = 1000;
+	int32 IndexInChain = 0;
+
 	TObjectPtr<ACentipedeSegment> PrevSegment;
 	TObjectPtr<ACentipedeSegment> NextSegment;
 
@@ -47,6 +52,8 @@ public:
 
 	UFUNCTION()
 	void OnSegmentMoveFinished(FVector NewLocation);
+	
+	TObjectPtr<ACentipedeEntity> CentipedeEntity;
 	
 private:
 

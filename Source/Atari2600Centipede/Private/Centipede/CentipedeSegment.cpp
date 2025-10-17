@@ -47,26 +47,27 @@ void ACentipedeSegment::Tick(float DeltaTime)
 
 	if (bIsHead)
 	{
-		return;
+		
+		CentipedeEntity->Trail.Insert(GetActorLocation(), 0);
+
+		if (CentipedeEntity->Trail.Num() > MaxTrailLength)
+			CentipedeEntity->Trail.RemoveAt(CentipedeEntity->Trail.Num() - 1);
+
+		SetActorEnableCollision(false);
 	}
 
-
-	const float FollowDistance = 70.f;
-
-	FVector TargetPos = PrevSegment->GetActorLocation();
-	FVector CurrentPos = GetActorLocation();
-
-	FVector Dir = TargetPos - CurrentPos;
-	float Dist = Dir.Size();
-
-	if (Dist > FollowDistance)
+	if (!bIsHead && CentipedeEntity)
 	{
-		Dir.Normalize();
+		SetActorEnableCollision(false);
+		int32 DelayIndex = FMath::FloorToInt(20.0f * IndexInChain);
 		
-		FVector NewPos = FMath::VInterpTo(CurrentPos, TargetPos - Dir * FollowDistance, DeltaTime, 100.f);
-		
-		SetActorLocation(NewPos);
-		
+		if (CentipedeEntity->Trail.Num() > DelayIndex)
+		{
+			FVector TargetPos = CentipedeEntity->Trail[DelayIndex];
+			
+			FVector NewPos = FMath::VInterpTo(GetActorLocation(), TargetPos, DeltaTime, 20.f);
+			SetActorLocation(NewPos);
+		}
 	}
 }
 

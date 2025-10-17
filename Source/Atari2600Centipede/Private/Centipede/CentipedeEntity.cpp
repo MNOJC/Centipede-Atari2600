@@ -2,6 +2,7 @@
 
 
 #include "Centipede/CentipedeEntity.h"
+#include "Centipede/CentipedeSegment.h"
 
 // Sets default values
 ACentipedeEntity::ACentipedeEntity()
@@ -50,6 +51,9 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 			Params
 		);
 
+		NewSegment->IndexInChain = i;
+		NewSegment->CentipedeEntity = this;
+
 		if (NewSegment)
 		{
 			Segments.Add(NewSegment);
@@ -63,7 +67,7 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 			}
 		}
 		
-		CurrentPos = CurrentPos - DirVec * SegmentSpacing;
+		//CurrentPos = CurrentPos - DirVec * SegmentSpacing;
 	}
 
 	for (int32 i = 0; i < Segments.Num(); i++)
