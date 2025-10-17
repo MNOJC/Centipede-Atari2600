@@ -41,6 +41,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void SetDefaultHealth(int _Health) { DefaultHealth = _Health; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void SetPoints(int _Points) { Points = _Points; }
 
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")

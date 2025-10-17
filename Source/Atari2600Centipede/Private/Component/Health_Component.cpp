@@ -2,6 +2,8 @@
 
 #include "Component/Health_Component.h"
 
+#include "Core/CentipedeGameMode.h"
+#include "Core/CentipedeHUD.h"
 #include "Interface/ScoreInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
@@ -27,7 +29,7 @@ void UHealth_Component::BeginPlay()
 void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
-	//IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), Points);
+	static_cast<ACentipedeHUD>(UGameplayStatics::GetPlayerControllerFromPlatformUser(,))
 }
 
 

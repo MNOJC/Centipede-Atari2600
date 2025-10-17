@@ -33,8 +33,11 @@ AMushrooms::AMushrooms()
 	FlipbookComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 	FlipbookComponent->SetGenerateOverlapEvents(true);
 
+	FlipbookComponent->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Art/Materials/M_Sprites_Mobs.M_Sprites_Mobs")));
+
 	HealthComponent = CreateDefaultSubobject<UHealth_Component>(TEXT("HealthComp"));
 	HealthComponent -> SetDefaultHealth(4);
+	HealthComponent -> SetPoints(100);
 	
 	
 }

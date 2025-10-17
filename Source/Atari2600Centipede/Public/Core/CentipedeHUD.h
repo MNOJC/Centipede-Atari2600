@@ -16,9 +16,17 @@ class ATARI2600CENTIPEDE_API ACentipedeHUD : public AHUD
 	GENERATED_BODY()
 
 	protected:
+	UFont* Font = nullptr;
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interface")
-	TSubclassOf<UUserWidget> CentipedePlayerHUD;
+	virtual void DrawHUD() override;
+	
+public:
+	// Function to update the score
+	void SetScore(int32 NewScore);
+	
+	void AddScore(int32 NewScore){PlayerScore += NewScore;}
+	
+private:
+	int32 PlayerScore = 0; // current score value
 	
 };
