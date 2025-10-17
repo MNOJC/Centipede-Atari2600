@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
+#include "Component/CentipedeMovementComponent.h"
 #include "CentipedeSegment.generated.h"
 
 UCLASS()
@@ -27,10 +28,29 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UPaperSpriteComponent* SpriteComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	UCentipedeMovementComponent* MovementComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void UpdateSegmentType(bool IsHead);
+	
 	bool bIsHead;
+
+	TObjectPtr<ACentipedeSegment> PrevSegment;
+	TObjectPtr<ACentipedeSegment> NextSegment;
+
+	UFUNCTION()
+	void OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnSegmentMoveFinished(FVector NewLocation);
+	
+private:
+
+	TObjectPtr<UPaperSprite> HeadSegmentSprite;
+	TObjectPtr<UPaperSprite> TailSegmentSprite;
 
 };

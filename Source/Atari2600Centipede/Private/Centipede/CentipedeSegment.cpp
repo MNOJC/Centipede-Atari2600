@@ -15,14 +15,20 @@ ACentipedeSegment::ACentipedeSegment()
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSprite"));
 	SpriteComponent->SetupAttachment(RootScene);
 
-	static ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteAsset(TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Centipede_Head_0.T_Centipede_Head_0"));
-	SpriteComponent->SetSprite(SpriteAsset.Object);
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> HeadSpriteAsset(TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Centipede_Head_0.T_Centipede_Head_0"));
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> TailSpriteAsset(TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Centipede_Body_0.T_Centipede_Body_0"));
+	
+	HeadSegmentSprite = HeadSpriteAsset.Object;
+	TailSegmentSprite = TailSpriteAsset.Object;
+	
 	SpriteComponent->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 	SpriteComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	SpriteComponent->SetRelativeLocation(FVector(1.0f, 0.0f, 0.0f));
 	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SpriteComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
 	SpriteComponent->SetGenerateOverlapEvents(true);
+
+	MovementComponent = CreateDefaultSubobject<UCentipedeMovementComponent>(TEXT("Movement component"));
 }
 
 // Called when the game starts or when spawned
@@ -30,6 +36,8 @@ void ACentipedeSegment::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &ACentipedeSegment::OnSegmentBeginOverlap);
+	MovementComponent->OnMovementComplete.AddDynamic(this, &ACentipedeSegment::OnSegmentMoveFinished);
 }
 
 // Called every frame
@@ -37,5 +45,56 @@ void ACentipedeSegment::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsHead)
+	{
+		return;
+	}
+
+
+	const float FollowDistance = 70.f;
+
+	FVector TargetPos = PrevSegment->GetActorLocation();
+	FVector CurrentPos = GetActorLocation();
+
+	FVector Dir = TargetPos - CurrentPos;
+	float Dist = Dir.Size();
+
+	if (Dist > FollowDistance)
+	{
+		Dir.Normalize();
+		
+		FVector NewPos = FMath::VInterpTo(CurrentPos, TargetPos - Dir * FollowDistance, DeltaTime, 100.f);
+		
+		SetActorLocation(NewPos);
+		
+	}
+}
+
+void ACentipedeSegment::UpdateSegmentType(bool IsHead)
+{
+	bIsHead = IsHead;
+	
+	if (bIsHead)
+	{
+		SpriteComponent->SetSprite(HeadSegmentSprite);
+		MovementComponent->CurrentDirection = EGridDirection::Right;
+		MovementComponent->HandleMovementPattern();
+	}
+	else
+	{
+		SpriteComponent->SetSprite(TailSegmentSprite);
+	}
+}
+
+void ACentipedeSegment::OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bIsHead)
+	MovementComponent->StopAndSnapToGrid();
+}
+
+void ACentipedeSegment::OnSegmentMoveFinished(FVector NewLocation)
+{
+	if (bIsHead)
+	MovementComponent->HandleMovementPattern();
 }
 

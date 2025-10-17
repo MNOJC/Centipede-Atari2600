@@ -22,15 +22,15 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 	if (NumSegments <= 0)
 		return;
 
-	const float SegmentSpacing = 100.f; 
+	const float SegmentSpacing = 70.f; 
 	FVector DirVec = FVector::ZeroVector;
 
 	switch (Direction)
 	{
-	case EGridDirection::Right: DirVec = FVector(1, 0, 0); break;
-	case EGridDirection::Left:  DirVec = FVector(-1, 0, 0); break;
-	case EGridDirection::Up:    DirVec = FVector(0, 1, 0); break;
-	case EGridDirection::Down:  DirVec = FVector(0, -1, 0); break;
+	case EGridDirection::Right: DirVec = -FVector::RightVector; break;
+	case EGridDirection::Left:  DirVec = FVector::RightVector; break;
+	case EGridDirection::Up:    DirVec = -FVector::UpVector; break;
+	case EGridDirection::Down:  DirVec = FVector::UpVector; break;
 	}
 
 	FVector CurrentPos = StartPos;
@@ -40,6 +40,8 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 		FActorSpawnParameters Params;
 		Params.Owner = this;
 		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		UE_LOG(LogTemp, Warning, TEXT("Pos : %s"), *CurrentPos.ToString());
 
 		ACentipedeSegment* NewSegment = GetWorld()->SpawnActor<ACentipedeSegment>(
 			ACentipedeSegment::StaticClass(),
@@ -51,14 +53,26 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 		if (NewSegment)
 		{
 			Segments.Add(NewSegment);
-			
 			if (i == 0)
-				NewSegment->bIsHead = true;
-			
+			{
+				NewSegment->UpdateSegmentType(true);
+			}
+			else
+			{
+				NewSegment->UpdateSegmentType(false);
+			}
 		}
+		
+		CurrentPos = CurrentPos - DirVec * SegmentSpacing;
+	}
 
-
-		CurrentPos -= DirVec * SegmentSpacing;
+	for (int32 i = 0; i < Segments.Num(); i++)
+	{
+		if (i > 0)
+		{
+			Segments[i]->PrevSegment = Segments[i - 1];
+			Segments[i - 1]->NextSegment = Segments[i];
+		}
 	}
 }
 
@@ -74,6 +88,8 @@ void ACentipedeEntity::BeginPlay()
 void ACentipedeEntity::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
 
 }
 
