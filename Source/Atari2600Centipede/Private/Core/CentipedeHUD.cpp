@@ -24,7 +24,7 @@ void ACentipedeHUD::DrawHUD()
 	const float ScreenY = Canvas->SizeY;
 	
 	DrawLine(0,ScreenY-100,ScreenX,ScreenY-100, FColor::Cyan, 5);
-	DrawText(TEXT("{d}",int 3), FLinearColor::Yellow, ScreenX -200, ScreenY - 50,Font,1);
+	//DrawText(TEXT("{d}",int 3), FLinearColor::Yellow, ScreenX -200, ScreenY - 50,Font,1);
 }
 
 void ACentipedeHUD::SetScore(int32 NewScore)

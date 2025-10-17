@@ -21,7 +21,7 @@ UHealth_Component::UHealth_Component()
 
 // Called when the game starts
 void UHealth_Component::BeginPlay()
-{
+{	
 	Super::BeginPlay();
 	Health = DefaultHealth;
 }
@@ -29,7 +29,6 @@ void UHealth_Component::BeginPlay()
 void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
-	static_cast<ACentipedeHUD>(UGameplayStatics::GetPlayerControllerFromPlatformUser(,))
 }
 
 
