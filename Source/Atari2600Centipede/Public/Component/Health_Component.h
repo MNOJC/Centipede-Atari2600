@@ -21,7 +21,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void BeginDestroy() override;
-	
+	void HandleDeath() const;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	int DefaultHealth;
 

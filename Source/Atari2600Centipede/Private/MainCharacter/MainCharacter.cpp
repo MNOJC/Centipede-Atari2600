@@ -85,7 +85,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		}
 		if (IA_Shoot)
 		{
-			EnhancedInput->BindAction(IA_Shoot, ETriggerEvent::Started, this, &AMainCharacter::Shoot);
+			EnhancedInput->BindAction(IA_Shoot, ETriggerEvent::Triggered, this, &AMainCharacter::Shoot);
 		}
 	}
 

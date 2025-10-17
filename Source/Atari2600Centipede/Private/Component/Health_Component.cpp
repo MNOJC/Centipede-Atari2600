@@ -30,10 +30,16 @@ void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
 }
+void UHealth_Component::HandleDeath() const
+{
+	Cast<ACentipedeHUD>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetHUD())->AddScore(Points);
 
+	// Now safe to destroy the actor
+	GetOwner()->Destroy();
+}
 
 void UHealth_Component::Damage(int DamageAmount)
 {
 	Health -= DamageAmount;
-	if (IsDead()) GetOwner()->Destroy();
+	if (IsDead()) HandleDeath();
 }

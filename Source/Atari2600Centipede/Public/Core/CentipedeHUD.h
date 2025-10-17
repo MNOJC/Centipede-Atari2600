@@ -24,7 +24,8 @@ public:
 	// Function to update the score
 	void SetScore(int32 NewScore);
 	
-	void AddScore(int32 NewScore){PlayerScore += NewScore;}
+	void AddScore(int32 NewScore)
+	{	PlayerScore += NewScore;	}
 	
 private:
 	int32 PlayerScore = 0; // current score value
