@@ -7,16 +7,16 @@
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
-#include "Interface/DamageInterface.h"
 #include "Projectile/CentipedeProjectile.h"
 #include "Component/Health_Component.h"
+#include "Parent/Damageable.h"
 #include "Mushrooms.generated.h"
 
 
 class UPaperSpriteComponent;
 
 UCLASS()
-class ATARI2600CENTIPEDE_API AMushrooms : public AActor, public IDamageInterface
+class ATARI2600CENTIPEDE_API AMushrooms : public ADamageable
 {
 	GENERATED_BODY()
 	
@@ -39,11 +39,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UPaperFlipbookComponent* FlipbookComponent;
-
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	UHealth_Component* HealthComponent;
 	
 	UFUNCTION()
-	virtual bool ReceiveDamage_Implementation(int DamageAmount) override;
+	virtual void Damage(int DamageAmount) override;
 };

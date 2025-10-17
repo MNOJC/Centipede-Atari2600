@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PaperSprite.h"
 #include "Interface/DamageInterface.h"
+#include "Parent/Damageable.h"
 #include "UObject/ConstructorHelpers.h"
 
 // Sets default values
@@ -50,10 +51,12 @@ void ACentipedeProjectile::BeginPlay()
 
 void ACentipedeProjectile::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (!OtherActor->Implements<UDamageInterface>())
-		return;
-	if (IDamageInterface::Execute_ReceiveDamage(OtherActor, 1))
+	if (ADamageable* _hitActor = Cast<ADamageable>(OtherActor))
+	{
+		_hitActor->Damage(1);
 		Destroy();
+	}
+			
 }
 
 

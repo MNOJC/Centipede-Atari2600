@@ -35,7 +35,6 @@ AMushrooms::AMushrooms()
 
 	FlipbookComponent->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Art/Materials/M_Sprites_Mobs.M_Sprites_Mobs")));
 
-	HealthComponent = CreateDefaultSubobject<UHealth_Component>(TEXT("HealthComp"));
 	HealthComponent -> SetDefaultHealth(4);
 	HealthComponent -> SetPoints(100);
 	
@@ -57,11 +56,10 @@ void AMushrooms::Tick(float DeltaTime)
 
 }
 
-bool AMushrooms::ReceiveDamage_Implementation(int DamageAmount)
+void AMushrooms::Damage(int DamageAmount)
 {
-	HealthComponent->Damage(DamageAmount);
+	Super::Damage(DamageAmount);
 	FlipbookComponent->SetPlaybackPositionInFrames(HealthComponent->GetHealth(), false);
-	return true;
 }
 
 
