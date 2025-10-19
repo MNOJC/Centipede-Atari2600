@@ -51,7 +51,7 @@ classDiagram
     Health_Component --> CentipedeGameMode : HandleDeath → Add_Score
     Mushroom *-- Damageable
     CentipedeEntity *-- Damageable
-    MushroomManager ..> Mushroom : Spawn Actor
+    MushroomManager ..> Mushroom : Generate Mushrooms
     CentipedeManager ..> CentipedeEntity : SpawnCentipede()
 ```
 
