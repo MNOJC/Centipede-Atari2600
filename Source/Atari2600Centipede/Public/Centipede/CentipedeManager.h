@@ -28,7 +28,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	ACentipedeEntity* SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir);
+	ACentipedeEntity* SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos);
 
 	void OnSegmentDestroyed(ACentipedeEntity* Parent, int32 SegmentIndex);
 

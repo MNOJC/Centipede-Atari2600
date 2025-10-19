@@ -30,12 +30,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UPaperSpriteComponent* SpriteComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	UCentipedeMovementComponent* MovementComponent;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	UCentipedeMovementComponent* MovementComponent;
 
 	void UpdateSegmentType(bool IsHead);
 	
@@ -54,10 +55,18 @@ public:
 	void OnSegmentMoveFinished(FVector NewLocation);
 	
 	TObjectPtr<ACentipedeEntity> CentipedeEntity;
+
+	int32 CountPrevSegments(ACentipedeSegment* Start);
+	int32 CountNextSegments(ACentipedeSegment* Start);
+
+	void DeleteNextSegments(ACentipedeSegment* Start);
+
+	TArray<FVector> GetNextSegmentsPositions(ACentipedeSegment* Start);
 	
 private:
 
 	TObjectPtr<UPaperSprite> HeadSegmentSprite;
 	TObjectPtr<UPaperSprite> TailSegmentSprite;
+	
 
 };

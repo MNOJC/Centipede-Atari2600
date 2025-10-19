@@ -15,7 +15,7 @@ ACentipedeEntity::ACentipedeEntity()
 	
 }
 
-void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction)
+void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos)
 {
 	Manager = InManager;
 	CurrentDirection = Direction;
@@ -42,6 +42,14 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 		Params.Owner = this;
 		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+		if (SegmentsPos.Num() > 0)
+		{
+			if (i < SegmentsPos.Num())
+				CurrentPos = SegmentsPos[i];
+			else
+				CurrentPos = SegmentsPos.Last();
+		}
+		
 		UE_LOG(LogTemp, Warning, TEXT("Pos : %s"), *CurrentPos.ToString());
 
 		ACentipedeSegment* NewSegment = GetWorld()->SpawnActor<ACentipedeSegment>(

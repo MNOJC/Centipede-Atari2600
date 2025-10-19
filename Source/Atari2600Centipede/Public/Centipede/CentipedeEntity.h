@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ACentipedeEntity();
 
-	void Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction);
+	void Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos);
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,6 +30,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	TArray<FVector> Trail;
+	TArray<ACentipedeSegment*> Segments;
 
 protected:
 	
@@ -51,5 +52,4 @@ private:
 
 	EGridDirection CurrentDirection;
 	TObjectPtr<ACentipedeManager> Manager;
-	TArray<ACentipedeSegment*> Segments;
 };

@@ -104,9 +104,6 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 void UCentipedeMovementComponent::HandleMovementPattern()
 {
 	if (bIsMoving) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("Current Direction: %s"), *UEnum::GetValueAsString(CurrentDirection));
-
 	
 	switch (CurrentDirection)
 	{

@@ -3,6 +3,11 @@
 
 #include "Centipede/CentipedeSegment.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Mushrooms/Mushrooms.h"
+#include "Projectile/CentipedeProjectile.h"
+
 // Sets default values
 ACentipedeSegment::ACentipedeSegment()
 {
@@ -38,7 +43,7 @@ void ACentipedeSegment::BeginPlay()
 	
 	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &ACentipedeSegment::OnSegmentBeginOverlap);
 	MovementComponent->OnMovementComplete.AddDynamic(this, &ACentipedeSegment::OnSegmentMoveFinished);
-	SetActorEnableCollision(false);
+	SetActorEnableCollision(true);
 }
 
 // Called every frame
@@ -63,7 +68,7 @@ void ACentipedeSegment::Tick(float DeltaTime)
 		{
 			FVector TargetPos = CentipedeEntity->Trail[DelayIndex];
 			
-			FVector NewPos = FMath::VInterpTo(GetActorLocation(), TargetPos, DeltaTime, 20.f);
+			FVector NewPos = FMath::VInterpTo(GetActorLocation(), TargetPos, DeltaTime, 2000.f);
 			SetActorLocation(NewPos);
 		}
 	}
@@ -75,23 +80,28 @@ void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 	
 	if (bIsHead)
 	{
-		SetActorEnableCollision(true);
 		SpriteComponent->SetSprite(HeadSegmentSprite);
 		MovementComponent->CurrentDirection = EGridDirection::Right;
 		MovementComponent->HandleMovementPattern();
 	}
 	else
 	{
-		SpriteComponent->SetGenerateOverlapEvents(false);
 		SpriteComponent->SetSprite(TailSegmentSprite);
 	}
 }
 
 void ACentipedeSegment::OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bIsHead)
+	
+	if (Cast<ACentipedeProjectile>(OtherActor))
 	{
-		//SetActorEnableCollision(false);
+		OtherActor->Destroy();
+		ACentipedeManager* CtpManager = Cast<ACentipedeManager>(UGameplayStatics::GetActorOfClass(GetWorld() ,ACentipedeManager::StaticClass()));
+		CtpManager->OnSegmentDestroyed(CentipedeEntity, IndexInChain);
+	}
+	
+	if (bIsHead && Cast<AMushrooms>(OtherActor))
+	{
 		MovementComponent->StopAndSnapToGrid();
 	}
 	
@@ -102,8 +112,93 @@ void ACentipedeSegment::OnSegmentMoveFinished(FVector NewLocation)
 	if (bIsHead)
 	{
 		MovementComponent->HandleMovementPattern();
-		//SetActorEnableCollision(false);
 	}
 	
 }
 
+int32 ACentipedeSegment::CountPrevSegments(ACentipedeSegment* Start)
+{
+	if (Start == nullptr)
+	{
+		return 0;
+	}
+
+	if (Start->NextSegment == nullptr)
+	{
+		return 0;
+	}
+	
+	int32 Count = 0;
+	ACentipedeSegment* Current = Start->PrevSegment;
+
+	while (Current)
+	{
+		++Count;
+		
+		Current = Current->PrevSegment;
+	}
+	
+	return Count;
+}
+
+int32 ACentipedeSegment::CountNextSegments(ACentipedeSegment* Start)
+{
+	int32 Count = 0;
+	ACentipedeSegment* Current = Start->NextSegment;
+
+	while (Current)
+	{
+		++Count;
+		Current = Current->NextSegment;
+	}
+	
+	return Count;
+}
+
+void ACentipedeSegment::DeleteNextSegments(ACentipedeSegment* Start)
+{
+	if (!Start)
+		return;
+
+	ACentipedeSegment* Current = Start->NextSegment;
+
+	while (Current)
+	{
+		ACentipedeSegment* Next = Current->NextSegment; 
+		
+		Current->PrevSegment = nullptr;
+		Current->NextSegment = nullptr;
+		
+		Current->Destroy();
+
+		Current = Next;
+	}
+	
+	Start->NextSegment = nullptr;
+}
+
+TArray<FVector> ACentipedeSegment::GetNextSegmentsPositions(ACentipedeSegment* Start)
+{
+	TArray<FVector> Positions;
+
+	if (!Start)
+	{
+		return Positions;
+	}
+
+	ACentipedeSegment* Current = Start->NextSegment;
+
+	while (Current)
+	{
+		Positions.Add(Current->GetActorLocation());
+		
+		if (Current == Current->NextSegment)
+		{
+			break;
+		}
+
+		Current = Current->NextSegment;
+	}
+
+	return Positions;
+}
