@@ -4,7 +4,6 @@
 
 #include "Core/CentipedeGameMode.h"
 #include "Core/CentipedeHUD.h"
-#include "Interface/ScoreInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
 
