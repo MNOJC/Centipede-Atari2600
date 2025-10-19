@@ -32,7 +32,7 @@ AMainCharacter::AMainCharacter()
 	SpriteComponent->SetRelativeScale3D(FVector(10,10,10));
 	SpriteComponent->SetRelativeRotation(FRotator(0, -90, 0));
 	MovementComponent->Acceleration = 15000.0f;
-	MovementComponent->Deceleration = 15000.0f;
+	MovementComponent->Deceleration = 100000.0f;
 	MovementComponent->MaxSpeed = 2000.0f;
 	
 
@@ -52,10 +52,10 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	CentipedeGameMode = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
 	InitializeCentipedeCamera();
 	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
-	SpriteComponent->SetMaterial(0,IMaterialTransfert::Execute_GetMaterialByTag(GetGameInstance(),FName("Player")));
+	SpriteComponent->SetMaterial(0,Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode())->GetMaterialByTag("Player"));
 }
 
 void AMainCharacter::PossessedBy(AController* NewController)
@@ -85,7 +85,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		}
 		if (IA_Shoot)
 		{
-			EnhancedInput->BindAction(IA_Shoot, ETriggerEvent::Started, this, &AMainCharacter::Shoot);
+			EnhancedInput->BindAction(IA_Shoot, ETriggerEvent::Triggered, this, &AMainCharacter::Shoot);
 		}
 	}
 

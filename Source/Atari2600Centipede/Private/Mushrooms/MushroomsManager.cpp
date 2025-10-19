@@ -3,6 +3,7 @@
 #include "Mushrooms/MushroomsManager.h"
 #include "Mushrooms/Mushrooms.h"
 #include "Algo/RandomShuffle.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMushroomsManager::AMushroomsManager()
@@ -16,7 +17,9 @@ AMushroomsManager::AMushroomsManager()
 void AMushroomsManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	AActor* GridActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass());
+	Grid = Cast<ACentipedeGridGenerator>(GridActor);
 }
 
 // Called every frame
@@ -30,12 +33,22 @@ void AMushroomsManager::GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int3
 {
 	if (GridPoints.Num() == 0 || MinCount > MaxCount)
 		return;
-	
-	GridPoints.RemoveAll([](const FVector& Point)
-	{
-		return Point.Z == 0.0f;
-	});
 
+	TArray<FVector> PointsToRemove;
+	
+	for (FVector Point : GridPoints)
+	{
+		if (Point.Z == 0.0f || Point.Z == Grid->GetGridBounds().Max.Z || Point.Y == Grid->GetGridBounds().Max.Y || Point.Y == 0)
+		{
+			PointsToRemove.Add(Point);
+		}
+	}
+	
+	for (const FVector& ToRemove : PointsToRemove)
+	{
+		GridPoints.Remove(ToRemove);
+	}
+	
 	if (GridPoints.Num() == 0)
 		return;
 	

@@ -1,6 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Component/Health_Component.h"
+
+#include "Core/CentipedeGameMode.h"
+#include "Core/CentipedeHUD.h"
+#include "Interface/ScoreInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
 
 // Sets default values for this component's properties
@@ -16,7 +21,7 @@ UHealth_Component::UHealth_Component()
 
 // Called when the game starts
 void UHealth_Component::BeginPlay()
-{
+{	
 	Super::BeginPlay();
 	Health = DefaultHealth;
 }
@@ -25,10 +30,16 @@ void UHealth_Component::BeginDestroy()
 {
 	Super::BeginDestroy();
 }
-
-
-void UHealth_Component::Damage(int DamageAmount)
+void UHealth_Component::HandleDeath() const
 {
-	Health -= DamageAmount;
-	if (IsDead()) GetOwner()->Destroy();
+	Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode())->AddScore(Points);
+
+	// Now safe to destroy the actor
+	GetOwner()->Destroy();
+}
+
+void UHealth_Component::Damage()
+{
+	Health -= 1;
+	if (IsDead()) HandleDeath();
 }

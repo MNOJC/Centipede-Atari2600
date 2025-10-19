@@ -3,6 +3,8 @@
 #include "Projectile/CentipedeProjectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "PaperSprite.h"
+#include "Interface/DamageInterface.h"
+#include "Parent/Damageable.h"
 #include "UObject/ConstructorHelpers.h"
 
 // Sets default values
@@ -44,8 +46,19 @@ void ACentipedeProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	CentipedeGameMode = Cast<ACentipedeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	
+	OnActorBeginOverlap.AddDynamic(this, &ACentipedeProjectile::OnOverlap);
 }
+
+void ACentipedeProjectile::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (ADamageable* _hitActor = Cast<ADamageable>(OtherActor))
+	{
+		_hitActor->Damage();
+		Destroy();
+	}
+			
+}
+
 
 // Called every frame
 void ACentipedeProjectile::Tick(float DeltaTime)

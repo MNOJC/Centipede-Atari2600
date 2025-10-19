@@ -3,17 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaperFlipbookComponent.h"
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
 #include "Projectile/CentipedeProjectile.h"
+#include "Component/Health_Component.h"
+#include "Parent/Damageable.h"
 #include "Mushrooms.generated.h"
 
 
 class UPaperSpriteComponent;
 
 UCLASS()
-class ATARI2600CENTIPEDE_API AMushrooms : public AActor
+class ATARI2600CENTIPEDE_API AMushrooms : public ADamageable
 {
 	GENERATED_BODY()
 	
@@ -35,10 +38,9 @@ protected:
 	USceneComponent* RootScene;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	UPaperSpriteComponent* SpriteComponent;
-
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPaperFlipbookComponent* FlipbookComponent;
 	
-
+	
+	UFUNCTION()
+	virtual void Damage() override;
 };

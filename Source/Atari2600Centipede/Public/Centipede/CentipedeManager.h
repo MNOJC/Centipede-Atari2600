@@ -4,19 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Grid/CentipedeGridGenerator.h"
-#include "MushroomsManager.generated.h"
+#include "CentipedeManager.generated.h"
 
+enum class EGridDirection : uint8;
+class ACentipedeEntity;
 
+UCLASS
 
-UCLASS()
-class ATARI2600CENTIPEDE_API AMushroomsManager : public AActor
+()
+class ATARI2600CENTIPEDE_API ACentipedeManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMushroomsManager();
+	ACentipedeManager();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,9 +27,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	ACentipedeEntity* SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir);
 
-	void GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount);
+	void OnSegmentDestroyed(ACentipedeEntity* Parent, int32 SegmentIndex);
 
-	TObjectPtr<ACentipedeGridGenerator> Grid;
+protected:
 
+	TArray<ACentipedeEntity*> ActiveCentipedes;
 };

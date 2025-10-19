@@ -2,31 +2,42 @@
 
 
 #include "Mushrooms/Mushrooms.h"
+
+#include "PaperFlipbook.h"
+#include "PaperFlipbookComponent.h"
 #include "Log/CentipedeLoggerCategories.h"
 #include "Interface/ScoreInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
 
 // Sets default values
 AMushrooms::AMushrooms()
-{
+{	
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
 	SetRootComponent(RootScene);
 
-	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSprite"));
-	SpriteComponent->SetupAttachment(RootScene);
+	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("PaperSprite"));
+	FlipbookComponent->SetupAttachment(RootScene);
 
-	static ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteAsset(TEXT("/Game/Art/Textures/SpriteSheet/Sprites/Sprites_01/T_Shroom_0.T_Shroom_0"));
-	SpriteComponent->SetSprite(SpriteAsset.Object);
+	FlipbookComponent->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr,TEXT("/Game/Art/Textures/SpriteSheet/FlipBook/T_Shroom.T_Shroom")));
+	FlipbookComponent->SetPlaybackPositionInFrames(4,false);
+	FlipbookComponent->SetLooping(false);
+	FlipbookComponent->Stop();
+	FlipbookComponent->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
+	FlipbookComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	FlipbookComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	FlipbookComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
+	FlipbookComponent->SetGenerateOverlapEvents(true);
+
+	FlipbookComponent->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Art/Materials/M_Sprites_Mobs.M_Sprites_Mobs")));
+
+	HealthComponent -> SetDefaultHealth(4);
+	HealthComponent -> SetPoints(100);
 	
-	SpriteComponent->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
-	SpriteComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-	SpriteComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	SpriteComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
-	SpriteComponent->SetGenerateOverlapEvents(true);
 	
 }
 
@@ -35,7 +46,7 @@ void AMushrooms::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &AMushrooms::OnBeginOverlap);
+	
 }
 
 // Called every frame
@@ -45,16 +56,10 @@ void AMushrooms::Tick(float DeltaTime)
 
 }
 
-void AMushrooms::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AMushrooms::Damage()
 {
-	if (OtherActor && OtherActor != this)
-	{
-		if (OtherActor->IsA(ACentipedeProjectile::StaticClass()))
-		{
-			IScoreInterface::Execute_Add_Score(UGameplayStatics::GetGameInstance(GetWorld()), 100);
-			this->Destroy();
-		}
-	}
-
+	Super::Damage();
+	FlipbookComponent->SetPlaybackPositionInFrames(HealthComponent->GetHealth(), false);
 }
+
 

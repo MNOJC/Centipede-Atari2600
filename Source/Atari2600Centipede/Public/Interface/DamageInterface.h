@@ -25,5 +25,5 @@ public:
 
 	// Called when this actor receives damage
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Damage")
-	void ReceiveDamage(int DamageAmount);
+	bool ReceiveDamage(int DamageAmount);
 };

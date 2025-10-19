@@ -3,6 +3,8 @@
 
 #include "Core/CentipedeHUD.h"
 #include "Blueprint/UserWidget.h"
+#include "Core/CentipedeGameMode.h"
+#include "Engine/Canvas.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Log/CentipedeLoggerCategories.h"
 
@@ -12,22 +14,28 @@ void ACentipedeHUD::BeginPlay()
 	
 	APlayerController* PlayerController = GetOwningPlayerController();
 	
-	TSubclassOf<UUserWidget> LoadedHUDClass = LoadClass<UUserWidget>(
-		nullptr,
-		TEXT("/Game/Core/HUD/WBP_Centipede_HUD.WBP_Centipede_HUD_C")
-	);
-	
-	if (!PlayerController)
-	{
-		UE_LOG(LogCentipede,Warning,TEXT("PlayerController is null, can't create HUD"));
-	}
-	UUserWidget* PlayerHUD = CreateWidget<UUserWidget>(PlayerController, LoadedHUDClass);
+	Font = LoadObject<UFont>(nullptr, TEXT("/Game/Art/Font/PressStart2P_Font.PressStart2P_Font"));
 
-	if (PlayerHUD)
-	{
-		PlayerHUD->AddToViewport();
-		return;
-	}
+}
+
+void ACentipedeHUD::DrawHUD()
+{
+	Super::DrawHUD();
 	
-	UE_LOG(LogCentipede,Error,TEXT("Can't CreateWidget | unknown"));
+	const float ScreenX = Canvas->SizeX;
+	const float ScreenY = Canvas->SizeY;
+	
+	DrawLine(0,ScreenY-100,ScreenX,ScreenY-100, FColor::Cyan, 5);
+	FString ScoreText = FString::Printf(TEXT("%d"), PlayerScore);
+	DrawText(ScoreText, FLinearColor::Yellow, ScreenX -200, ScreenY - 50,Font,1);
+}
+
+void ACentipedeHUD::SetScore(int32 NewScore)
+{
+	PlayerScore = NewScore;
+}
+
+void ACentipedeHUD::AddScore(int32 NewScore)
+{
+	PlayerScore += NewScore;
 }
