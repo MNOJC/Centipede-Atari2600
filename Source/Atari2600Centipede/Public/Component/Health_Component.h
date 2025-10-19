@@ -24,7 +24,7 @@ protected:
 	void HandleDeath() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	int DefaultHealth;
+	int DefaultHealth = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
 	int Health;
