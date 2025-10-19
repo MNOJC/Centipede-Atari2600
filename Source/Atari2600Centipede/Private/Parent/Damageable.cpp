@@ -28,7 +28,7 @@ void ADamageable::Tick(float DeltaTime)
 }
 
 
-void ADamageable::Damage(int DamageAmount)
+void ADamageable::Damage()
 {
-	HealthComponent->Damage(DamageAmount);
+	HealthComponent->Damage();
 }

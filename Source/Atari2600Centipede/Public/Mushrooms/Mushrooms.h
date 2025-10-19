@@ -42,5 +42,5 @@ protected:
 	
 	
 	UFUNCTION()
-	virtual void Damage(int DamageAmount) override;
+	virtual void Damage() override;
 };

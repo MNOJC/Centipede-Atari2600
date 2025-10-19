@@ -53,7 +53,7 @@ void ACentipedeProjectile::OnOverlap(AActor* OverlappedActor, AActor* OtherActor
 {
 	if (ADamageable* _hitActor = Cast<ADamageable>(OtherActor))
 	{
-		_hitActor->Damage(1);
+		_hitActor->Damage();
 		Destroy();
 	}
 			

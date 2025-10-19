@@ -3,6 +3,7 @@
 
 #include "Core/CentipedeHUD.h"
 #include "Blueprint/UserWidget.h"
+#include "Core/CentipedeGameMode.h"
 #include "Engine/Canvas.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Log/CentipedeLoggerCategories.h"
@@ -14,6 +15,7 @@ void ACentipedeHUD::BeginPlay()
 	APlayerController* PlayerController = GetOwningPlayerController();
 	
 	Font = LoadObject<UFont>(nullptr, TEXT("/Game/Art/Font/PressStart2P_Font.PressStart2P_Font"));
+
 }
 
 void ACentipedeHUD::DrawHUD()
@@ -31,4 +33,9 @@ void ACentipedeHUD::DrawHUD()
 void ACentipedeHUD::SetScore(int32 NewScore)
 {
 	PlayerScore = NewScore;
+}
+
+void ACentipedeHUD::AddScore(int32 NewScore)
+{
+	PlayerScore += NewScore;
 }

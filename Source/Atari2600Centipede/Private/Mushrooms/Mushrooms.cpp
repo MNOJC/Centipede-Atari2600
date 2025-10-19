@@ -56,9 +56,9 @@ void AMushrooms::Tick(float DeltaTime)
 
 }
 
-void AMushrooms::Damage(int DamageAmount)
+void AMushrooms::Damage()
 {
-	Super::Damage(DamageAmount);
+	Super::Damage();
 	FlipbookComponent->SetPlaybackPositionInFrames(HealthComponent->GetHealth(), false);
 }
 

@@ -55,7 +55,7 @@ void AMainCharacter::BeginPlay()
 	CentipedeGameMode = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
 	InitializeCentipedeCamera();
 	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
-	SpriteComponent->SetMaterial(0,IMaterialTransfert::Execute_GetMaterialByTag(GetGameInstance(),FName("Player")));
+	SpriteComponent->SetMaterial(0,Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode())->GetMaterialByTag("Player"));
 }
 
 void AMainCharacter::PossessedBy(AController* NewController)

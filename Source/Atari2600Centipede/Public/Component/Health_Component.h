@@ -34,7 +34,7 @@ protected:
 
 public:
 
-	void Damage(int DamageAmount);
+	void Damage();
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	int GetHealth() const { return Health; }
