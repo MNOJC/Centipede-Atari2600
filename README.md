@@ -8,3 +8,7 @@
 
 [CPP Syntax](Documents/CppSyntax.pdf)\
 [Introduction](Documents/UECppIntroduction.pdf)
+
+## RENDU
+
+[Structure](Documents\Diagrams\CentipedeGameArchitecture.md)
