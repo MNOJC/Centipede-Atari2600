@@ -38,7 +38,7 @@ public:
 
 	TObjectPtr<ACentipedeGridGenerator> GridReference;
 	
-	float MoveSpeed = 450.0f;
+	float MoveSpeed = 650.0f;
 	bool bIsMoving = false;
 	EGridDirection CurrentDirection;
 	

@@ -56,8 +56,16 @@ ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector Sta
 
 void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 SegmentIndex)
 {
-	
-	const int32 SegmentCount = Parent->Segments[SegmentIndex]->CountNextSegments(Parent->Segments[SegmentIndex]) - 1 ;
+	int32 SegmentCount = Parent->Segments[SegmentIndex]->CountNextSegments(Parent->Segments[SegmentIndex]);
+
+	if (Parent->Segments[SegmentIndex]->NextSegment == nullptr )
+	{
+		SegmentCount = 0;
+	}
+	else if (Parent->Segments[SegmentIndex]->NextSegment->IsPendingKillPending())
+	{
+		SegmentCount = 0;
+	}
 	
 	SpawnCentipede(
 		SegmentCount,

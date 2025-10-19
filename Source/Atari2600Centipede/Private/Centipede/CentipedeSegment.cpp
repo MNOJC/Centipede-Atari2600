@@ -62,7 +62,7 @@ void ACentipedeSegment::Tick(float DeltaTime)
 
 	if (!bIsHead && CentipedeEntity)
 	{
-		int32 DelayIndex = FMath::FloorToInt(20.0f * IndexInChain);
+		int32 DelayIndex = FMath::FloorToInt(14.0f * IndexInChain);
 		
 		if (CentipedeEntity->Trail.Num() > DelayIndex)
 		{
