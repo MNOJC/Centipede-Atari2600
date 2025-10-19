@@ -12,3 +12,4 @@
 ## RENDU
 
 [Structure](Documents/Diagrams/CentipedeGameArchitecture.md)
+[Build](build.link)
