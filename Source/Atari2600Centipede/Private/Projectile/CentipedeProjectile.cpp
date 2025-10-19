@@ -3,7 +3,6 @@
 #include "Projectile/CentipedeProjectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "PaperSprite.h"
-#include "Interface/DamageInterface.h"
 #include "Parent/Damageable.h"
 #include "UObject/ConstructorHelpers.h"
 

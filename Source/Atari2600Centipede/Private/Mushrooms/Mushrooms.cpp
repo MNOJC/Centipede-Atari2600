@@ -6,7 +6,6 @@
 #include "PaperFlipbook.h"
 #include "PaperFlipbookComponent.h"
 #include "Log/CentipedeLoggerCategories.h"
-#include "Interface/ScoreInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"

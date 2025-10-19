@@ -7,7 +7,6 @@
 #include "EnhancedInputSubsystems.h"
 #include "PaperSprite.h"
 #include "Core/CentipedeGameMode.h"
-#include "Interface/MaterialTransfert.h"
 #include "Kismet/GameplayStatics.h"
 #include "Log/CentipedeLoggerCategories.h"
 
