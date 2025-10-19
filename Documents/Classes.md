@@ -1,40 +1,52 @@
-# Classes
-### 📷 Camera
-- `CentipedeCamera` - Camera system implementation
-
-### 🧩 Component
-- `Health_Component` - Health management component
-
-### ⚙️ Core
-- `CentipedeGameInstance` - Game instance management
-- `CentipedeGameMode` - Game mode logic
-- `CentipedeHUD` - Heads-up display
-- `CentipedePlayerController` - Player input and control
-
-### 📦 DataAsset
-- `CentipedColorDA` - Color data asset implementation
-
-### 🔧 Function
-- `CentipedeColorFunctions` - Color utility functions
-
-### ⊞ Grid
-- `CentipedeGridGenerator` - Grid generation system
-
-### 🔌 Interface
-- `DamageInterface` - Damage system interface
-- `MaterialTransfert` - Material transfer interface
-- `ScoreInterface` - Scoring system interface
-
-### 📝 Log
-- `CentipedeLogger` - Logging implementation
-- `CentipedeLoggerCategories` - Log categories
-
-### 👤 MainCharacter
-- `MainCharacter` - Player character implementation
-
-### 🍄 Mushrooms
-- `Mushrooms` - Individual mushroom actor
-- `MushroomsManager` - Mushroom spawning and management
-
-### 🚀 Projectile
-- `CentipedeProjectile` - Projectile behavior
+classDiagram
+    class MainCharacter {
+        +Move()
+        +Shoot()
+    }
+    
+    class CentipedeProjectile {
+        +OnBeginOverlap()
+    }
+    
+    class Damageable {
+        +Damage()
+    }
+    
+    class Mushroom {
+    }
+    
+    class MushroomManager {
+        +GenerateMushroomsOnGrid()
+    }
+    
+    class Health_Component {
+        +Damage()
+        +HandleDeath()
+    }
+    
+    class CentipedeGameMode {
+        +Add_Score()
+        +NextLevel()
+        +GetMaterialByTag()
+        +SkipLevel()
+    }
+    
+    class CentipedeManager {
+        +SpawnCentipede()
+    }
+    
+    class CentipedeEntity {
+        +Initialise()
+        +Move()
+    }
+    
+    MainCharacter --> CentipedeProjectile : Spawn Actor
+    MainCharacter --> CentipedeGameMode : GetMaterial
+    CentipedeProjectile --> Damageable
+    MushroomManager --> Mushroom : Spawn Actor
+    Mushroom ..|> Damageable : implements
+    Damageable --> Health_Component
+    Mushroom --> Health_Component
+    Health_Component --> CentipedeGameMode : Add_Score
+    CentipedeGameMode --> CentipedeGameMode : Exec SkipLevel
+    CentipedeManager --> CentipedeEntity : SpawnCentipede
