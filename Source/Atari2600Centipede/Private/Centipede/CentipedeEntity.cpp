@@ -66,8 +66,6 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 				NewSegment->UpdateSegmentType(false);
 			}
 		}
-		
-		//CurrentPos = CurrentPos - DirVec * SegmentSpacing;
 	}
 
 	for (int32 i = 0; i < Segments.Num(); i++)

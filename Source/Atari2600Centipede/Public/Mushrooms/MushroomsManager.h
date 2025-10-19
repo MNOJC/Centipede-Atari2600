@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Grid/CentipedeGridGenerator.h"
 #include "MushroomsManager.generated.h"
+
+
 
 UCLASS()
 class ATARI2600CENTIPEDE_API AMushroomsManager : public AActor
@@ -23,6 +26,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount); 
+	void GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount);
+
+	TObjectPtr<ACentipedeGridGenerator> Grid;
 
 };

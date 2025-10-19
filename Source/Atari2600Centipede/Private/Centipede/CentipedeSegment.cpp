@@ -38,6 +38,7 @@ void ACentipedeSegment::BeginPlay()
 	
 	SpriteComponent->OnComponentBeginOverlap.AddDynamic(this, &ACentipedeSegment::OnSegmentBeginOverlap);
 	MovementComponent->OnMovementComplete.AddDynamic(this, &ACentipedeSegment::OnSegmentMoveFinished);
+	SetActorEnableCollision(false);
 }
 
 // Called every frame
@@ -52,13 +53,10 @@ void ACentipedeSegment::Tick(float DeltaTime)
 
 		if (CentipedeEntity->Trail.Num() > MaxTrailLength)
 			CentipedeEntity->Trail.RemoveAt(CentipedeEntity->Trail.Num() - 1);
-
-		SetActorEnableCollision(false);
 	}
 
 	if (!bIsHead && CentipedeEntity)
 	{
-		SetActorEnableCollision(false);
 		int32 DelayIndex = FMath::FloorToInt(20.0f * IndexInChain);
 		
 		if (CentipedeEntity->Trail.Num() > DelayIndex)
@@ -77,12 +75,14 @@ void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 	
 	if (bIsHead)
 	{
+		SetActorEnableCollision(true);
 		SpriteComponent->SetSprite(HeadSegmentSprite);
 		MovementComponent->CurrentDirection = EGridDirection::Right;
 		MovementComponent->HandleMovementPattern();
 	}
 	else
 	{
+		SpriteComponent->SetGenerateOverlapEvents(false);
 		SpriteComponent->SetSprite(TailSegmentSprite);
 	}
 }
@@ -90,12 +90,20 @@ void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 void ACentipedeSegment::OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (bIsHead)
-	MovementComponent->StopAndSnapToGrid();
+	{
+		//SetActorEnableCollision(false);
+		MovementComponent->StopAndSnapToGrid();
+	}
+	
 }
 
 void ACentipedeSegment::OnSegmentMoveFinished(FVector NewLocation)
 {
 	if (bIsHead)
-	MovementComponent->HandleMovementPattern();
+	{
+		MovementComponent->HandleMovementPattern();
+		//SetActorEnableCollision(false);
+	}
+	
 }
 

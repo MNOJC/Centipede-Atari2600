@@ -32,7 +32,7 @@ AMainCharacter::AMainCharacter()
 	SpriteComponent->SetRelativeScale3D(FVector(10,10,10));
 	SpriteComponent->SetRelativeRotation(FRotator(0, -90, 0));
 	MovementComponent->Acceleration = 15000.0f;
-	MovementComponent->Deceleration = 15000.0f;
+	MovementComponent->Deceleration = 100000.0f;
 	MovementComponent->MaxSpeed = 2000.0f;
 	
 

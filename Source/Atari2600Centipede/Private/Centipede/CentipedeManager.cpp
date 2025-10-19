@@ -21,7 +21,7 @@ void ACentipedeManager::BeginPlay()
 	Super::BeginPlay();
 	
 if(ACentipedeGameMode* GM = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode()))
-	SpawnCentipede(20, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right);
+	SpawnCentipede(11, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right);
 }
 
 // Called every frame

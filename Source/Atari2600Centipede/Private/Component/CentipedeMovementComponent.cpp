@@ -46,6 +46,7 @@ void UCentipedeMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 			MoveProgress = 0.f;
 			
 			OnMovementComplete.Broadcast(TargetLocation);
+			GetOwner()->SetActorEnableCollision(true);
 		}
 	}
 }
@@ -79,6 +80,11 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 
 	StartLocation = GetOwner()->GetActorLocation();
 	TargetLocation = StartLocation + DirVector * CellSize * Cells;
+
+	if (Direction == EGridDirection::Down)
+	{
+		TargetLocation.Y += LastHorizontal == EGridDirection::Right ? -CellSize/2 : CellSize/2;
+	}
 	
 	FVector ClampedLocation;
 	
@@ -115,7 +121,8 @@ void UCentipedeMovementComponent::HandleMovementPattern()
 		break;
 
 	case EGridDirection::Down:
-		
+
+		GetOwner()->SetActorEnableCollision(false);
 		MoveInDirection(EGridDirection::Down, 1);
 
 		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
