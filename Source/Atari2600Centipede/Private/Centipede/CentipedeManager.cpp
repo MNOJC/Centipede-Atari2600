@@ -23,7 +23,7 @@ void ACentipedeManager::BeginPlay()
 	Super::BeginPlay();
 	
 if(ACentipedeGameMode* GM = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode()))
-	SpawnCentipede(11, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>());
+	SpawnCentipede(11, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
 }
 
 // Called every frame
@@ -33,7 +33,7 @@ void ACentipedeManager::Tick(float DeltaTime)
 
 }
 
-ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos)
+ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos, TArray<FVector> NewTrail)
 {
 	if (NumSegments <= 0)
 	{
@@ -45,7 +45,7 @@ ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector Sta
 
 	if (NewCenti)
 	{
-		NewCenti->Initialize(this, NumSegments, StartPos, StartDir, SegmentPos);
+		NewCenti->Initialize(this, NumSegments, StartPos, StartDir, SegmentPos, NewTrail);
 		ActiveCentipedes.Add(NewCenti);
 	}
 
@@ -58,7 +58,7 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 {
 	int32 SegmentCount = Parent->Segments[SegmentIndex]->CountNextSegments(Parent->Segments[SegmentIndex]);
 
-	if (Parent->Segments[SegmentIndex]->NextSegment == nullptr )
+	if (Parent->Segments[SegmentIndex]->NextSegment == nullptr)
 	{
 		SegmentCount = 0;
 	}
@@ -67,12 +67,22 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 		SegmentCount = 0;
 	}
 	
+	int32 TrimCount = 14 * (SegmentIndex + 1);
+	
+	TArray<FVector> NewTrimTrailArray;
+
+	if (TrimCount < Parent->Trail.Num())
+	{
+		NewTrimTrailArray.Append(Parent->Trail.GetData() + TrimCount, Parent->Trail.Num() - TrimCount);
+	}
+
 	SpawnCentipede(
 		SegmentCount,
 		Parent->Segments[SegmentIndex]->GetActorLocation(),
 		Parent->Segments[0]->MovementComponent->LastHorizontal,
-		Parent->Segments[SegmentIndex]->GetNextSegmentsPositions(Parent->Segments[SegmentIndex]
-			));
+		Parent->Segments[SegmentIndex]->GetNextSegmentsPositions(Parent->Segments[SegmentIndex]),
+		NewTrimTrailArray
+			);
 	
 	Parent->Segments[SegmentIndex]->DeleteNextSegments(Parent->Segments[SegmentIndex]);
 	Parent->Segments[SegmentIndex]->Destroy();

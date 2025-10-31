@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ACentipedeEntity();
 
-	void Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos);
+	void Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail);
 
 protected:
 	// Called when the game starts or when spawned

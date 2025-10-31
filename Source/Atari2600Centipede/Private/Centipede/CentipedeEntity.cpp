@@ -15,11 +15,11 @@ ACentipedeEntity::ACentipedeEntity()
 	
 }
 
-void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos)
+void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail)
 {
 	Manager = InManager;
 	CurrentDirection = Direction;
-	//GEngine->AddOnScreenDebugMessage(1, 20.0f, FColor::Red, UEnum::GetValueAsString(CurrentDirection));
+	Trail = NewTrail;
 	
 	if (NumSegments <= 0)
 		return;
@@ -99,10 +99,7 @@ void ACentipedeEntity::BeginPlay()
 void ACentipedeEntity::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//CurrentDirection = Segments[0]->MovementComponent->LastHorizontal;
-
-	//GEngine->AddOnScreenDebugMessage(1, 0.0, FColor::Yellow,  UEnum::GetValueAsString(CurrentDirection));
+	
 }
 
 void ACentipedeEntity::OnCentipedeMovementComplete(FVector NewLocation)
