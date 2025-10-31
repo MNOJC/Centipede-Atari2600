@@ -8,6 +8,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Centipede/CentipedeSegment.h"
 #include "Log/CentipedeLoggerCategories.h"
+#include "Mushrooms/Mushrooms.h"
 
 // Sets default values
 ACentipedeManager::ACentipedeManager()
@@ -87,5 +88,15 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 	Parent->Segments[SegmentIndex]->DeleteNextSegments(Parent->Segments[SegmentIndex]);
 	Parent->Segments[SegmentIndex]->Destroy();
 	Parent->SetGarbageEliminationEnabled(true);
+
+
+	FVector SpawnLocation = Parent->Segments[SegmentIndex]->GetActorLocation();
+	FRotator SpawnRotation = FRotator::ZeroRotator;
+		
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		
+	GetWorld()->SpawnActor<AMushrooms>(AMushrooms::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
 }
 

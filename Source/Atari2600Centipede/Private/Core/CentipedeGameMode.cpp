@@ -93,7 +93,7 @@ void ACentipedeGameMode::SpawnAndInitializeMushroomsManager()
 		SpawnParams
 	);
 
-	SpawnedMushroomsManager->GenerateMushroomsOnGrid(GridPoints, 27, 38);
+	SpawnedMushroomsManager->GenerateMushroomsOnGrid(GridPoints, 27, 0);
 }
 
 
