@@ -41,7 +41,7 @@ public:
 	float MoveSpeed = 650.0f;
 	bool bIsMoving = false;
 	EGridDirection CurrentDirection;
-	
+	EGridDirection LastHorizontal;
 	FOnMovementComplete OnMovementComplete;
 
 private:
@@ -49,7 +49,6 @@ private:
 	FVector StartLocation;
 	FVector TargetLocation;
 	float MoveProgress = 0.f;
-	EGridDirection LastHorizontal;
 	float TravelDistance = 0.f;
 	float TravelTime = 0.f;
 

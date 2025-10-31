@@ -38,10 +38,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	int32 SizeY = 20;
+	int32 SizeY = 30;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	int32 SizeZ = 10;
+	int32 SizeZ = 17;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
 	float CellSize = 100.0f;

@@ -81,7 +81,7 @@ void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 	if (bIsHead)
 	{
 		SpriteComponent->SetSprite(HeadSegmentSprite);
-		MovementComponent->CurrentDirection = EGridDirection::Right;
+		MovementComponent->CurrentDirection = CentipedeEntity->CurrentDirection;
 		MovementComponent->HandleMovementPattern();
 	}
 	else

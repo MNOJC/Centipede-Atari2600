@@ -70,7 +70,7 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 	SpawnCentipede(
 		SegmentCount,
 		Parent->Segments[SegmentIndex]->GetActorLocation(),
-		Parent->Segments[SegmentIndex]->MovementComponent->CurrentDirection,
+		Parent->Segments[0]->MovementComponent->LastHorizontal,
 		Parent->Segments[SegmentIndex]->GetNextSegmentsPositions(Parent->Segments[SegmentIndex]
 			));
 	

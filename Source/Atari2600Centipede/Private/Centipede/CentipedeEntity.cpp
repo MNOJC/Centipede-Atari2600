@@ -19,6 +19,7 @@ void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegment
 {
 	Manager = InManager;
 	CurrentDirection = Direction;
+	//GEngine->AddOnScreenDebugMessage(1, 20.0f, FColor::Red, UEnum::GetValueAsString(CurrentDirection));
 	
 	if (NumSegments <= 0)
 		return;
@@ -99,8 +100,9 @@ void ACentipedeEntity::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	//CurrentDirection = Segments[0]->MovementComponent->LastHorizontal;
 
+	//GEngine->AddOnScreenDebugMessage(1, 0.0, FColor::Yellow,  UEnum::GetValueAsString(CurrentDirection));
 }
 
 void ACentipedeEntity::OnCentipedeMovementComplete(FVector NewLocation)

@@ -31,13 +31,10 @@ public:
 
 	TArray<FVector> Trail;
 	TArray<ACentipedeSegment*> Segments;
+	EGridDirection CurrentDirection;
 
-protected:
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UCentipedeMovementComponent* CentipedeMovementComponent;
-
-	
 
 private:
 
@@ -50,6 +47,6 @@ private:
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	EGridDirection CurrentDirection;
+	
 	TObjectPtr<ACentipedeManager> Manager;
 };

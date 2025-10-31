@@ -122,7 +122,7 @@ void AMainCharacter::InitializeCentipedeCamera()
 	{
 		const FVector CenterLocation = CentipedeGameMode->SpawnedGrid->GetGridCenterLocation();
 
-		const FVector CameraLocation(500.f, CenterLocation.Y, CenterLocation.Z);   
+		const FVector CameraLocation(500.f, CenterLocation.Y, CenterLocation.Z - 200);   
 		const FRotator CameraRotation(0.f, 180.f, 0.f);
 
 		FActorSpawnParameters SpawnParams;

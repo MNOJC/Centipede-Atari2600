@@ -2,8 +2,6 @@
 
 
 #include "Grid/CentipedeGridGenerator.h"
-
-#include "IPropertyTable.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
