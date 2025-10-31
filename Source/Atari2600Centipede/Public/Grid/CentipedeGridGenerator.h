@@ -38,13 +38,13 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	int32 SizeY = 30;
+	int32 SizeY = 30 * 2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	int32 SizeZ = 17;
+	int32 SizeZ = 17 * 2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Grid settings")
-	float CellSize = 100.0f;
+	float CellSize = 50.0f;
 
 	TArray<FVector> GenerateGrid();
 	FVector GetGridCenterLocation();
