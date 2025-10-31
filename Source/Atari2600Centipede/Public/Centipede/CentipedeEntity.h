@@ -32,6 +32,7 @@ public:
 	TArray<FVector> Trail;
 	TArray<ACentipedeSegment*> Segments;
 	EGridDirection CurrentDirection;
+	bool bCentipedeClimb = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UCentipedeMovementComponent* CentipedeMovementComponent;

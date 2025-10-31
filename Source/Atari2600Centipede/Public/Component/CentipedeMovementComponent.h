@@ -2,11 +2,14 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
 #include "Grid/CentipedeGridGenerator.h"
 #include "Components/ActorComponent.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "CentipedeMovementComponent.generated.h"
+
+class ACentipedeEntity;
 
 UENUM(BlueprintType)
 enum class EGridDirection : uint8
@@ -37,6 +40,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	TObjectPtr<ACentipedeGridGenerator> GridReference;
+	TObjectPtr<ACentipedeEntity> CentipedeEntity;
 	
 	float MoveSpeed = 650.0f;
 	bool bIsMoving = false;

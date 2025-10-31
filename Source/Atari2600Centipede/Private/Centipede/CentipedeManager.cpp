@@ -83,7 +83,7 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 		Parent->Segments[0]->MovementComponent->LastHorizontal,
 		Parent->Segments[SegmentIndex]->GetNextSegmentsPositions(Parent->Segments[SegmentIndex]),
 		NewTrimTrailArray
-			);
+		);
 	
 	Parent->Segments[SegmentIndex]->DeleteNextSegments(Parent->Segments[SegmentIndex]);
 	Parent->Segments[SegmentIndex]->Destroy();

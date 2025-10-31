@@ -3,6 +3,7 @@
 
 #include "Component/CentipedeMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Centipede/CentipedeSegment.h"
 #include "Mushrooms/Mushrooms.h"
 
 // Sets default values for this component's properties
@@ -23,6 +24,22 @@ void UCentipedeMovementComponent::BeginPlay()
 
 	ACentipedeGridGenerator* FoundGrid = Cast<ACentipedeGridGenerator>(UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass()));
 	GridReference = FoundGrid;
+
+
+	if (CentipedeEntity = Cast<ACentipedeEntity>(GetOwner()))
+	{
+		
+	}
+	else
+	{
+		ACentipedeSegment* CentipedeSegment = Cast<ACentipedeSegment>(GetOwner());
+		AActor* Owner = GetOwner();
+		
+		CentipedeEntity = Cast<ACentipedeEntity>(CentipedeSegment->CentipedeEntity);
+
+		//UE_LOG(LogTemp, Log, TEXT("Owner class: %s"), *CentipedeEntity->GetClass()->GetName());
+	}
+	
 	
 }
 
@@ -81,7 +98,7 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 	StartLocation = GetOwner()->GetActorLocation();
 	TargetLocation = StartLocation + DirVector * CellSize * Cells;
 
-	if (Direction == EGridDirection::Down)
+	if (Direction == EGridDirection::Down || Direction == EGridDirection::Up)
 	{
 		TargetLocation.Y += LastHorizontal == EGridDirection::Right ? -CellSize/2 : CellSize/2;
 	}
@@ -104,23 +121,36 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 void UCentipedeMovementComponent::HandleMovementPattern()
 {
 	if (bIsMoving) return;
-	
+
+	/*if (CentipedeEntity->Segments[0]->GetActorLocation().Z <= 10)
+	{
+		CentipedeEntity->bCentipedeClimb = true;
+	}
+	*/
 	switch (CurrentDirection)
 	{
 	case EGridDirection::Right:
 		MoveInDirection(EGridDirection::Right, 99);
-		CurrentDirection = EGridDirection::Down;
+		//CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
 		break;
 
 	case EGridDirection::Left:
 		MoveInDirection(EGridDirection::Left, 99);
-		CurrentDirection = EGridDirection::Down;
+		//CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
 		break;
 
 	case EGridDirection::Down:
 
 		GetOwner()->SetActorEnableCollision(false);
 		MoveInDirection(EGridDirection::Down, 1);
+
+		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
+		LastHorizontal = CurrentDirection;
+
+	case EGridDirection::Up:
+
+		GetOwner()->SetActorEnableCollision(false);
+		MoveInDirection(EGridDirection::Up, 1);
 
 		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
 		LastHorizontal = CurrentDirection;
