@@ -51,6 +51,7 @@ void ACentipedeSegment::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 	if (bIsHead)
 	{
 		
@@ -86,6 +87,7 @@ void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 	}
 	else
 	{
+		MovementComponent->UnregisterComponent();
 		SpriteComponent->SetSprite(TailSegmentSprite);
 	}
 }

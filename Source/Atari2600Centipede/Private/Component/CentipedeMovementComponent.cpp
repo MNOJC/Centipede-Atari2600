@@ -4,6 +4,7 @@
 #include "Component/CentipedeMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Centipede/CentipedeSegment.h"
+#include "EntitySystem/MovieSceneComponentDebug.h"
 #include "Mushrooms/Mushrooms.h"
 
 // Sets default values for this component's properties
@@ -30,16 +31,6 @@ void UCentipedeMovementComponent::BeginPlay()
 	{
 		
 	}
-	else
-	{
-		ACentipedeSegment* CentipedeSegment = Cast<ACentipedeSegment>(GetOwner());
-		AActor* Owner = GetOwner();
-		
-		CentipedeEntity = Cast<ACentipedeEntity>(CentipedeSegment->CentipedeEntity);
-
-		//UE_LOG(LogTemp, Log, TEXT("Owner class: %s"), *CentipedeEntity->GetClass()->GetName());
-	}
-	
 	
 }
 
@@ -49,6 +40,14 @@ void UCentipedeMovementComponent::TickComponent(float DeltaTime, ELevelTick Tick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	GEngine->AddOnScreenDebugMessage(
+		1,
+		0.0f,
+		FColor::Yellow,
+		FString::Printf(TEXT("CurrentDirection: %s"),
+			*UEnum::GetValueAsString(CurrentDirection))
+	);
+	
 	if (bIsMoving)
 	{
 		MoveProgress += DeltaTime / TravelTime;
@@ -122,21 +121,34 @@ void UCentipedeMovementComponent::HandleMovementPattern()
 {
 	if (bIsMoving) return;
 
-	/*if (CentipedeEntity->Segments[0]->GetActorLocation().Z <= 10)
+	if(ACentipedeSegment* CentipedeSegment = Cast<ACentipedeSegment>(GetOwner()))
+	{
+		CentipedeEntity = Cast<ACentipedeEntity>(CentipedeSegment->CentipedeEntity);
+	}
+	
+
+	if (CentipedeEntity->Segments[0]->GetActorLocation().Z <= 10)
 	{
 		CentipedeEntity->bCentipedeClimb = true;
 	}
-	*/
+	else if (CentipedeEntity->Segments[0]->GetActorLocation().Z >= GridReference->GetGridBounds().Max.Z)
+	{
+		CentipedeEntity->bCentipedeClimb = false;
+	}
+
+	
+	
 	switch (CurrentDirection)
 	{
 	case EGridDirection::Right:
 		MoveInDirection(EGridDirection::Right, 99);
-		//CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
+		CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
+		
 		break;
 
 	case EGridDirection::Left:
 		MoveInDirection(EGridDirection::Left, 99);
-		//CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
+		CurrentDirection = CentipedeEntity->bCentipedeClimb == true ? EGridDirection::Up : EGridDirection::Down;
 		break;
 
 	case EGridDirection::Down:
@@ -146,9 +158,11 @@ void UCentipedeMovementComponent::HandleMovementPattern()
 
 		CurrentDirection = (LastHorizontal == EGridDirection::Right) ? EGridDirection::Left : EGridDirection::Right;
 		LastHorizontal = CurrentDirection;
+		break;
 
+		
 	case EGridDirection::Up:
-
+		
 		GetOwner()->SetActorEnableCollision(false);
 		MoveInDirection(EGridDirection::Up, 1);
 

@@ -100,6 +100,9 @@ void ACentipedeEntity::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	
+	
+	
 }
 
 void ACentipedeEntity::OnCentipedeMovementComplete(FVector NewLocation)
