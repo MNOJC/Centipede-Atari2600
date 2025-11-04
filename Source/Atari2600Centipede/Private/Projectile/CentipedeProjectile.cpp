@@ -50,6 +50,7 @@ void ACentipedeProjectile::BeginPlay()
 
 void ACentipedeProjectile::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Projectile overlapped with: %s"), *OverlappedActor->GetName());
 	if (ADamageable* _hitActor = Cast<ADamageable>(OtherActor))
 	{
 		_hitActor->Damage();

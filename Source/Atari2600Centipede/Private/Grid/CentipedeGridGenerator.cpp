@@ -38,7 +38,7 @@ TArray<FVector> ACentipedeGridGenerator::GenerateGrid()
 			{
 				const FVector CellLocation = FVector(0.0f, y * CellSize, i * CellSize);
 				
-				UKismetSystemLibrary::DrawDebugCircle(GetWorld(), CellLocation, 20.0f, 4, FLinearColor::Yellow, 99999.0f, 6.0f, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), false);
+				//UKismetSystemLibrary::DrawDebugCircle(GetWorld(), CellLocation, 20.0f, 4, FLinearColor::Yellow, 99999.0f, 6.0f, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), false);
 				GridPoints.Add(CellLocation);
 			}
 		}

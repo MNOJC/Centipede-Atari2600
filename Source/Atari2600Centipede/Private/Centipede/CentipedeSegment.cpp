@@ -34,6 +34,9 @@ ACentipedeSegment::ACentipedeSegment()
 	SpriteComponent->SetGenerateOverlapEvents(true);
 
 	MovementComponent = CreateDefaultSubobject<UCentipedeMovementComponent>(TEXT("Movement component"));
+
+	HealthComponent->SetDefaultHealth(1);
+	HealthComponent->SetPoints(200);
 }
 
 // Called when the game starts or when spawned
@@ -75,6 +78,12 @@ void ACentipedeSegment::Tick(float DeltaTime)
 	}
 }
 
+void ACentipedeSegment::Damage()
+{
+	Super::Damage();
+	
+}
+
 void ACentipedeSegment::UpdateSegmentType(bool IsHead)
 {
 	bIsHead = IsHead;
@@ -97,7 +106,6 @@ void ACentipedeSegment::OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedCom
 	
 	if (Cast<ACentipedeProjectile>(OtherActor))
 	{
-		OtherActor->Destroy();
 		ACentipedeManager* CtpManager = Cast<ACentipedeManager>(UGameplayStatics::GetActorOfClass(GetWorld() ,ACentipedeManager::StaticClass()));
 		CtpManager->OnSegmentDestroyed(CentipedeEntity, IndexInChain);
 	}

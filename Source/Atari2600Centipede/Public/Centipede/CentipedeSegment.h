@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <Parent/Damageable.h>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
@@ -12,7 +14,7 @@
 
 
 UCLASS()
-class ATARI2600CENTIPEDE_API ACentipedeSegment : public AActor
+class ATARI2600CENTIPEDE_API ACentipedeSegment : public ADamageable
 {
 	GENERATED_BODY()
 	
@@ -31,12 +33,16 @@ protected:
 	UPaperSpriteComponent* SpriteComponent;
 
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UCentipedeMovementComponent* MovementComponent;
+
+	UFUNCTION()
+	virtual void Damage() override;
 
 	void UpdateSegmentType(bool IsHead);
 	
