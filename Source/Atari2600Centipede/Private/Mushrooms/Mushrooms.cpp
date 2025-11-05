@@ -5,9 +5,9 @@
 
 #include "PaperFlipbook.h"
 #include "PaperFlipbookComponent.h"
-#include "Log/CentipedeLoggerCategories.h"
-#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
+#include "EngineUtils.h"
+#include "Flea.h"
 #include "UObject/ConstructorHelpers.h"
 
 // Sets default values
@@ -57,8 +57,41 @@ void AMushrooms::Tick(float DeltaTime)
 
 void AMushrooms::Damage()
 {
+
 	Super::Damage();
 	FlipbookComponent->SetPlaybackPositionInFrames(HealthComponent->GetHealth(), false);
+
+	if(!HealthComponent->IsDead())
+		return;
+	
+	int32 MushroomCount = 0;
+
+	for (TActorIterator<AMushrooms> It(GetWorld()); It; ++It)
+	{
+		++MushroomCount;
+	}
+
+	if (MushroomCount < 32)
+	{
+		TActorIterator<ACentipedeGridGenerator> It(GetWorld());
+		TObjectPtr<ACentipedeGridGenerator> Grid = Cast<ACentipedeGridGenerator>(*It);
+
+		
+		const float RandomY = FMath::RandRange(Grid->GetGridBounds().Min.Y, Grid->GetGridBounds().Max.Y);
+		FVector SpawnLocation(0.f, RandomY, Grid->GetGridBounds().Max.Z);      
+		FRotator SpawnRotation(0.f, 0.f, 0.f);       
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;                    
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		
+		AFlea* Flea = GetWorld()->SpawnActor<AFlea>(
+		AFlea::StaticClass(),
+		SpawnLocation,
+		SpawnRotation,
+		SpawnParams
+	);
+	}
+	
 }
 
 
