@@ -122,6 +122,8 @@ void ACentipedeGameMode::NextLevel()
 	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
 	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
 	ColorHelper::ApplyCentipedeColorMob(T_Colors_ptr[Level % (T_Colors_ptr.Num())], MPCi);
+
+	SpawnedCentipedeManager->SpawnCentipede(11, FVector(0.0f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
 }
 
 UMaterialInstanceDynamic* ACentipedeGameMode::GetMaterialByTag(FName Tag)

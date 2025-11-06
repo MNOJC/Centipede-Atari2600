@@ -3,6 +3,7 @@
 
 #include "Centipede/CentipedeManager.h"
 
+#include "EngineUtils.h"
 #include "Centipede/CentipedeEntity.h"
 #include "Core/CentipedeGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -98,5 +99,17 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		
 	GetWorld()->SpawnActor<AMushrooms>(AMushrooms::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
+
+	int CentipedeSegmentCount = 0;
+	for (TActorIterator<ACentipedeSegment> It(GetWorld()); It; ++It)
+	{
+		++CentipedeSegmentCount;
+	}
+
+	if (CentipedeSegmentCount <= 0)
+	{
+		ACentipedeGameMode* GM = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
+		GM->SkipLevel();
+	}
 }
 
