@@ -3,7 +3,7 @@
 
 #include "Flea.h"
 #include "EngineUtils.h"
-#include "Mushrooms/Mushrooms.h"
+#include "Mushrooms.h"
 
 // Sets default values
 AFlea::AFlea()

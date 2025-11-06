@@ -6,7 +6,7 @@
 #include "PaperSpriteComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaperSprite.h"
-#include "Parent/Damageable.h"
+#include "Damageable.h"
 #include "Flea.generated.h"
 
 UCLASS()
