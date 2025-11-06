@@ -44,7 +44,9 @@ AMushrooms::AMushrooms()
 void AMushrooms::BeginPlay()
 {
 	Super::BeginPlay();
-
+	FVector Location = GetActorLocation();
+	FVector NewLocation(FMath::RandRange(-0.5f, 0.5f), Location.Y, Location.Z);
+	SetActorLocation(NewLocation, false);
 	
 }
 
