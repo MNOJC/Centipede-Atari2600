@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CentipedeCamera.h"
 #include "Centipede/CentipedeEntity.h"
 #include "Centipede/CentipedeManager.h"
 #include "DataAsset/CentipedColorDA.h"
@@ -56,10 +57,12 @@ public:
 	void SpawnAndInitializeGrid();
 	void SpawnCentipedeManager();
 	void SpawnAndInitializeMushroomsManager();
+	void InitializeCentipedeCamera();
 	
- 	TSoftObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
-	TSoftObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
-	TSoftObjectPtr<ACentipedeManager> SpawnedCentipedeManager; 
+ 	TObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
+	TObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
+	TObjectPtr<ACentipedeManager> SpawnedCentipedeManager;
+	TObjectPtr<ACentipedeCamera> CentipedeCameraActor;
 
 	TArray<FVector> GridPoints;
 

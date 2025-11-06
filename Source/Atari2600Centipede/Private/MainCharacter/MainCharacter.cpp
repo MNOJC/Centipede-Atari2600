@@ -52,7 +52,6 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CentipedeGameMode = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
-	InitializeCentipedeCamera();
 	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
 	SpriteComponent->SetMaterial(0,Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode())->GetMaterialByTag("Player"));
 }
@@ -114,32 +113,6 @@ void AMainCharacter::Shoot(const FInputActionValue& Value)
 	UE_LOG(LogCentipede, Log, TEXT("Try spawn projectile"));
 }
 
-void AMainCharacter::InitializeCentipedeCamera()
-{
-	if (!GetWorld()) return;
-
-	if (CentipedeGameMode)
-	{
-		const FVector CenterLocation = CentipedeGameMode->SpawnedGrid->GetGridCenterLocation();
-
-		const FVector CameraLocation(500.f, CenterLocation.Y, CenterLocation.Z - 200);   
-		const FRotator CameraRotation(0.f, 180.f, 0.f);
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = this;
-		SpawnParams.Instigator = GetInstigator();
-
-		CentipedeCameraActor = GetWorld()->SpawnActor<ACentipedeCamera>(ACentipedeCamera::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
-	}
-
-	if (CentipedeCameraActor)
-	{
-		if (APlayerController* PC = Cast<APlayerController>(GetController()))
-		{
-			PC->SetViewTarget(CentipedeCameraActor);
-		}
-	}
-}
 
 void AMainCharacter::ConstraintPlayerInBounds()
 {

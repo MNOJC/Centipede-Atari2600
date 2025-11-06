@@ -17,6 +17,7 @@ void ACentipedeGameMode::BeginPlay()
 	SpawnAndInitializeGrid();
 	SpawnAndInitializeMushroomsManager();
 	SpawnCentipedeManager();
+	InitializeCentipedeCamera();
 }
 
 ACentipedeGameMode::ACentipedeGameMode()
@@ -136,4 +137,29 @@ void ACentipedeGameMode::SkipLevel()
 {
 	UE_LOG(LogCentipede, Log, TEXT("Skip Level: %d"), Level);
 	NextLevel();
+}
+
+void ACentipedeGameMode::InitializeCentipedeCamera()
+{
+	if (!GetWorld()) return;
+	
+		const FVector CenterLocation = SpawnedGrid->GetGridCenterLocation();
+
+		const FVector CameraLocation(500.f, CenterLocation.Y, CenterLocation.Z - 200);   
+		const FRotator CameraRotation(0.f, 180.f, 0.f);
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		CentipedeCameraActor = GetWorld()->SpawnActor<ACentipedeCamera>(ACentipedeCamera::StaticClass(), CameraLocation, CameraRotation, SpawnParams);
+
+
+	if (CentipedeCameraActor)
+	{
+		if (APlayerController* PC = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0)))
+		{
+			PC->SetViewTarget(CentipedeCameraActor);
+		}
+	}
 }

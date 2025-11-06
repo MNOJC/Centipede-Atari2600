@@ -73,8 +73,7 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Shoot(const FInputActionValue& Value);
-
-	void InitializeCentipedeCamera();
+	
 	void ConstraintPlayerInBounds();
 
 private:
