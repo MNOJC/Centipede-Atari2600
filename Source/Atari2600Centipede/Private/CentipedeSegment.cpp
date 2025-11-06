@@ -106,7 +106,7 @@ void ACentipedeSegment::OnSegmentBeginOverlap(UPrimitiveComponent* OverlappedCom
 	
 	if (Cast<ACentipedeProjectile>(OtherActor))
 	{
-		ACentipedeManager* CtpManager = Cast<ACentipedeManager>(UGameplayStatics::GetActorOfClass(GetWorld() ,ACentipedeManager::StaticClass()));
+		UCentipedeManager* CtpManager = GetWorld()->GetSubsystem<UCentipedeManager>();
 		CtpManager->OnSegmentDestroyed(CentipedeEntity, IndexInChain);
 	}
 	

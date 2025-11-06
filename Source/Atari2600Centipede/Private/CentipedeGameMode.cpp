@@ -66,13 +66,8 @@ void ACentipedeGameMode::SpawnCentipedeManager()
 {
 	if (!GetWorld()) return;
 
-	const FVector SpawnLocation(0.f,0.f, 0.f);
-	const FRotator SpawnRotation(0.f, 0.f, 0.f);
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
-
-	SpawnedCentipedeManager = GetWorld()->SpawnActor<ACentipedeManager>(SpawnLocation, SpawnRotation, SpawnParams);
+	UCentipedeManager* CptManager = GetWorld()->GetSubsystem<UCentipedeManager>();
+	CptManager->SpawnCentipede(11, FVector(0.0f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
 	
 }
 
@@ -80,20 +75,9 @@ void ACentipedeGameMode::SpawnAndInitializeMushroomsManager()
 {
 	
 	if (!GetWorld()) return;
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	const FVector SpawnLocation = FVector::ZeroVector;      
-	const FRotator SpawnRotation = FRotator::ZeroRotator;
-
-	SpawnedMushroomsManager = GetWorld()->SpawnActor<AMushroomsManager>(
-		AMushroomsManager::StaticClass(),
-		SpawnLocation,
-		SpawnRotation,
-		SpawnParams
-	);
-
+	
+	SpawnedMushroomsManager = GetWorld()->GetSubsystem<UMushroomsManager>(); 
+	
 	SpawnedMushroomsManager->GenerateMushroomsOnGrid(GridPoints, 38, 42);
 }
 
@@ -122,8 +106,24 @@ void ACentipedeGameMode::NextLevel()
 	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
 	ColorHelper::ApplyCentipedeColorTarget(T_Colors_ptr[(Level+1)%(T_Colors_ptr.Num())], PlayerMat);
 	ColorHelper::ApplyCentipedeColorMob(T_Colors_ptr[Level % (T_Colors_ptr.Num())], MPCi);
+	
+	//SpawnedCentipedeManager->SpawnCentipede(11, FVector(0.0f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
 
-	SpawnedCentipedeManager->SpawnCentipede(11, FVector(0.0f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
+	if (UCentipedeManager* CentipedeMgr = GetWorld()->GetSubsystem<UCentipedeManager>())
+	{
+		CentipedeMgr->SpawnCentipede(
+			11,
+			FVector(0.0f, SpawnedGrid->GetGridBounds().Max.Y, SpawnedGrid->GetGridBounds().Max.Z),
+			EGridDirection::Right,
+			TArray<FVector>(),
+			TArray<FVector>()
+		);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CentipedeManager subsystem is null in GameMode!"));
+	}
+	
 }
 
 UMaterialInstanceDynamic* ACentipedeGameMode::GetMaterialByTag(FName Tag)

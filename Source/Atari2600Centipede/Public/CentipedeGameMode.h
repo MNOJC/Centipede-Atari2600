@@ -60,8 +60,8 @@ public:
 	void InitializeCentipedeCamera();
 	
  	TObjectPtr<ACentipedeGridGenerator>  SpawnedGrid;
-	TObjectPtr<AMushroomsManager> SpawnedMushroomsManager;
-	TObjectPtr<ACentipedeManager> SpawnedCentipedeManager;
+	TObjectPtr<UMushroomsManager> SpawnedMushroomsManager;
+	TObjectPtr<UCentipedeManager> SpawnedCentipedeManager;
 	TObjectPtr<ACentipedeCamera> CentipedeCameraActor;
 
 	TArray<FVector> GridPoints;

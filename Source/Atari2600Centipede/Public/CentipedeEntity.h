@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CentipedeManager.h"
 #include "CentipedeMovementComponent.h"
 #include "GameFramework/Actor.h"
 #include "CentipedeEntity.generated.h"
 
 class ACentipedeSegment;
-class ACentipedeManager;
+class UCentipedeManager;
 
 UCLASS()
 class ATARI2600CENTIPEDE_API ACentipedeEntity : public AActor
@@ -19,7 +20,7 @@ public:
 	// Sets default values for this actor's properties
 	ACentipedeEntity();
 
-	void Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail);
+	void Initialize(int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail);
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,5 +50,5 @@ private:
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	
-	TObjectPtr<ACentipedeManager> Manager;
+	TObjectPtr<UCentipedeManager> Manager;
 };

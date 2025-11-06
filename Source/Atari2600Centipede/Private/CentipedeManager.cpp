@@ -11,31 +11,8 @@
 #include "CentipedeLoggerCategories.h"
 #include "Mushrooms.h"
 
-// Sets default values
-ACentipedeManager::ACentipedeManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 
-}
-
-// Called when the game starts or when spawned
-void ACentipedeManager::BeginPlay()
-{
-	Super::BeginPlay();
-	
-if(ACentipedeGameMode* GM = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode()))
-	SpawnCentipede(11, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
-}
-
-// Called every frame
-void ACentipedeManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos, TArray<FVector> NewTrail)
+ACentipedeEntity* UCentipedeManager::SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos, TArray<FVector> NewTrail)
 {
 	if (NumSegments <= 0)
 	{
@@ -47,7 +24,7 @@ ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector Sta
 
 	if (NewCenti)
 	{
-		NewCenti->Initialize(this, NumSegments, StartPos, StartDir, SegmentPos, NewTrail);
+		NewCenti->Initialize(NumSegments, StartPos, StartDir, SegmentPos, NewTrail);
 		ActiveCentipedes.Add(NewCenti);
 	}
 
@@ -56,7 +33,7 @@ ACentipedeEntity* ACentipedeManager::SpawnCentipede(int NumSegments, FVector Sta
 	return NewCenti;
 }
 
-void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 SegmentIndex)
+void UCentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 SegmentIndex)
 {
 	int32 SegmentCount = Parent->Segments[SegmentIndex]->CountNextSegments(Parent->Segments[SegmentIndex]);
 
@@ -95,7 +72,6 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 	FRotator SpawnRotation = FRotator::ZeroRotator;
 		
 	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		
 	GetWorld()->SpawnActor<AMushrooms>(AMushrooms::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
@@ -113,3 +89,18 @@ void ACentipedeManager::OnSegmentDestroyed(ACentipedeEntity* Parent, int32 Segme
 	}
 }
 
+void UCentipedeManager::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+	if(ACentipedeGameMode* GM = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Yellow, TEXT("ca sedfz"));
+		SpawnCentipede(11, FVector(0.0f, GM->SpawnedGrid->GetGridBounds().Max.Y, GM->SpawnedGrid->GetGridBounds().Max.Z), EGridDirection::Right, TArray<FVector>(), TArray<FVector>());
+	}
+		
+}
+
+void UCentipedeManager::Deinitialize()
+{
+	Super::Deinitialize();
+}

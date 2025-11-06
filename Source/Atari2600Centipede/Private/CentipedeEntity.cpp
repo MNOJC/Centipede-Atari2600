@@ -2,7 +2,10 @@
 
 
 #include "CentipedeEntity.h"
+
+#include "CentipedeManager.h"
 #include "CentipedeSegment.h"
+#include "MushroomsManager.h"
 
 // Sets default values
 ACentipedeEntity::ACentipedeEntity()
@@ -15,9 +18,9 @@ ACentipedeEntity::ACentipedeEntity()
 	
 }
 
-void ACentipedeEntity::Initialize(ACentipedeManager* InManager, int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail)
+void ACentipedeEntity::Initialize(int32 NumSegments, const FVector& StartPos, EGridDirection Direction, TArray<FVector> SegmentsPos, TArray<FVector> NewTrail)
 {
-	Manager = InManager;
+	Manager = GetWorld()->GetSubsystem<UCentipedeManager>();
 	CurrentDirection = Direction;
 	Trail = NewTrail;
 	

@@ -5,36 +5,15 @@
 #include "Algo/RandomShuffle.h"
 #include "Kismet/GameplayStatics.h"
 
-// Sets default values
-AMushroomsManager::AMushroomsManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-// Called when the game starts or when spawned
-void AMushroomsManager::BeginPlay()
-{
-	Super::BeginPlay();
-
-	AActor* GridActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass());
-	Grid = Cast<ACentipedeGridGenerator>(GridActor);
-}
-
-// Called every frame
-void AMushroomsManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void AMushroomsManager::GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount)
+void UMushroomsManager::GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount)
 {
 	if (GridPoints.Num() == 0 || MinCount > MaxCount)
 		return;
 
 	TArray<FVector> PointsToRemove;
+
+	AActor* GridActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass());
+	Grid = Cast<ACentipedeGridGenerator>(GridActor);
 	
 	for (FVector Point : GridPoints)
 	{
@@ -63,10 +42,21 @@ void AMushroomsManager::GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int3
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 		
 		FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = this;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		
 		GetWorld()->SpawnActor<AMushrooms>(AMushrooms::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
 	}
 }
 
+void UMushroomsManager::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
+	AActor* GridActor = UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass());
+	Grid = Cast<ACentipedeGridGenerator>(GridActor);
+}
+
+void UMushroomsManager::Deinitialize()
+{
+	Super::Deinitialize();
+}

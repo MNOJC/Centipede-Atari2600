@@ -12,21 +12,15 @@ class ACentipedeEntity;
 UCLASS
 
 ()
-class ATARI2600CENTIPEDE_API ACentipedeManager : public AActor
+class ATARI2600CENTIPEDE_API UCentipedeManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	ACentipedeManager();
+public:
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	
+	virtual void Deinitialize() override;
 	
 	ACentipedeEntity* SpawnCentipede(int NumSegments, FVector StartPos, EGridDirection StartDir, TArray<FVector> SegmentPos, TArray<FVector> NewTrail);
 

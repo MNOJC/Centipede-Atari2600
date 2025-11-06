@@ -4,27 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "CentipedeGridGenerator.h"
 #include "MushroomsManager.generated.h"
 
 
 
 UCLASS()
-class ATARI2600CENTIPEDE_API AMushroomsManager : public AActor
+class ATARI2600CENTIPEDE_API UMushroomsManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
-	AMushroomsManager();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	
+	virtual void Deinitialize() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	void GenerateMushroomsOnGrid(TArray<FVector> GridPoints, int32 MinCount, int32 MaxCount);
 
