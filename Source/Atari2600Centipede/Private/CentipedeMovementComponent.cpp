@@ -2,6 +2,8 @@
 
 
 #include "CentipedeMovementComponent.h"
+
+#include "CentipedeLoggerCategories.h"
 #include "Kismet/GameplayStatics.h"
 #include "CentipedeSegment.h"
 #include "EntitySystem/MovieSceneComponentDebug.h"
@@ -25,6 +27,10 @@ void UCentipedeMovementComponent::BeginPlay()
 
 	ACentipedeGridGenerator* FoundGrid = Cast<ACentipedeGridGenerator>(UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass()));
 	GridReference = FoundGrid;
+	if (GridReference == nullptr)
+	{
+	    UE_LOG(LogCentipede, Error, TEXT("GridReference is nullptr!"));
+	}
 
 
 	if (CentipedeEntity = Cast<ACentipedeEntity>(GetOwner()))

@@ -60,6 +60,8 @@ void ACentipedeGameMode::SpawnAndInitializeGrid()
 	SpawnedGrid = GetWorld()->SpawnActor<ACentipedeGridGenerator>(ACentipedeGridGenerator::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
 	GridPoints = SpawnedGrid->GenerateGrid();
 	
+	AMainCharacter* PlayerPawn = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+    PlayerPawn->SetGridBounds(SpawnedGrid->GetGridBounds());
 }
 
 void ACentipedeGameMode::SpawnCentipedeManager()

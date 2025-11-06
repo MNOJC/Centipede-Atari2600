@@ -52,7 +52,6 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CentipedeGameMode = Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode());
-	GridBounds = CentipedeGameMode->SpawnedGrid->GetGridBounds();
 	SpriteComponent->SetMaterial(0,Cast<ACentipedeGameMode>(GetWorld()->GetAuthGameMode())->GetMaterialByTag("Player"));
 }
 
@@ -116,6 +115,7 @@ void AMainCharacter::Shoot(const FInputActionValue& Value)
 
 void AMainCharacter::ConstraintPlayerInBounds()
 {
+	if (GridBounds.Min == FVector::ZeroVector && GridBounds.Max == FVector::ZeroVector) return;
 	const float ClampedLocationY = FMath::Clamp(this->GetActorLocation().Y, GridBounds.Min.Y, GridBounds.Max.Y);
 	const float ClampedLocationZ = FMath::Clamp(this->GetActorLocation().Z, GridBounds.Min.Z, CustomZConstraint);
 	

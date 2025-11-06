@@ -39,6 +39,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+	void SetGridBounds(const FBound& Value){GridBounds = Value;}
+
 protected:
 
 	// Camera
@@ -73,6 +76,8 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Shoot(const FInputActionValue& Value);
+
+
 	
 	void ConstraintPlayerInBounds();
 
