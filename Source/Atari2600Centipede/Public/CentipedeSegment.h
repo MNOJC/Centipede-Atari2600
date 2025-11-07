@@ -48,7 +48,7 @@ public:
 	
 	bool bIsHead;
 
-	int32 MaxTrailLength = 1000;
+	int32 MaxTrailLength = 500;
 	int32 IndexInChain = 0;
 
 	TObjectPtr<ACentipedeSegment> PrevSegment;

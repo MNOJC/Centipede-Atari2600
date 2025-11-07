@@ -91,6 +91,7 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 		return;
 	
 	CurrentDirection = Direction;
+	ACentipedeGridGenerator* FoundGrid = Cast<ACentipedeGridGenerator>(UGameplayStatics::GetActorOfClass(GetWorld(), ACentipedeGridGenerator::StaticClass()));
 
 	if (Direction == EGridDirection::Right || Direction == EGridDirection::Left)
 	{
@@ -98,7 +99,7 @@ void UCentipedeMovementComponent::MoveInDirection(EGridDirection Direction, int3
 	}
 
 	FVector DirVector = GetDirectionVector(Direction);
-	float CellSize = GridReference->CellSize;
+	float CellSize = FoundGrid->CellSize;
 
 	StartLocation = GetOwner()->GetActorLocation();
 	TargetLocation = StartLocation + DirVector * CellSize * Cells;

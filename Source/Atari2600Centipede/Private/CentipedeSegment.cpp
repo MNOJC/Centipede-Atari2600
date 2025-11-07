@@ -57,24 +57,42 @@ void ACentipedeSegment::Tick(float DeltaTime)
 	
 	if (bIsHead)
 	{
+		FVector CurrentLocation = GetActorLocation();
 		
-		CentipedeEntity->Trail.Insert(GetActorLocation(), 0);
-
-		if (CentipedeEntity->Trail.Num() > MaxTrailLength)
-			CentipedeEntity->Trail.RemoveAt(CentipedeEntity->Trail.Num() - 1);
+		if (CentipedeEntity->Trail.Num() == 0 || FVector::Dist(CentipedeEntity->Trail[0], CurrentLocation) > 5.0f)
+		{
+			CentipedeEntity->Trail.Insert(CurrentLocation, 0);
+			
+			if (CentipedeEntity->Trail.Num() > MaxTrailLength)
+				CentipedeEntity->Trail.RemoveAt(CentipedeEntity->Trail.Num() - 1);
+		}
 	}
 
 	if (!bIsHead && CentipedeEntity)
 	{
-		int32 DelayIndex = FMath::FloorToInt(14.0f * IndexInChain);
-		
-		if (CentipedeEntity->Trail.Num() > DelayIndex)
+		float SegmentSpacing = 85.f;
+		float DesiredDistance = IndexInChain * SegmentSpacing;
+
+		float Accumulated = 0.f;
+		int32 DelayIndex = 0;
+
+		for (int32 i = 1; i < CentipedeEntity->Trail.Num(); ++i)
+		{
+			Accumulated += FVector::Dist(CentipedeEntity->Trail[i - 1], CentipedeEntity->Trail[i]);
+			if (Accumulated >= DesiredDistance)
+			{
+				DelayIndex = i;
+				break;
+			}
+		}
+
+		if (CentipedeEntity->Trail.IsValidIndex(DelayIndex))
 		{
 			FVector TargetPos = CentipedeEntity->Trail[DelayIndex];
-			
-			FVector NewPos = FMath::VInterpTo(GetActorLocation(), TargetPos, DeltaTime, 2000.f);
+			FVector NewPos = FMath::VInterpTo(GetActorLocation(), TargetPos, DeltaTime, 100.f);
 			SetActorLocation(NewPos);
 		}
+
 	}
 }
 

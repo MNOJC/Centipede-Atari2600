@@ -41,8 +41,13 @@ public:
 
 	TObjectPtr<ACentipedeGridGenerator> GridReference;
 	TObjectPtr<ACentipedeEntity> CentipedeEntity;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
 	float MoveSpeed = 650.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
+	float TravelTime = 0.f;
+	
 	bool bIsMoving = false;
 	EGridDirection CurrentDirection;
 	EGridDirection LastHorizontal;
@@ -54,7 +59,8 @@ private:
 	FVector TargetLocation;
 	float MoveProgress = 0.f;
 	float TravelDistance = 0.f;
-	float TravelTime = 0.f;
+
+	
 
 	FVector GetDirectionVector(EGridDirection Direction) const;
 	
